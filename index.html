@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TKA Ekonomi — Latihan Soal &amp; Rekap Guru</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16233F;
+    --navy-2:#223159;
+    --navy-3:#2E4372;
+    --paper:#F1F3F6;
+    --card:#FFFFFF;
+    --ink:#1A1F2B;
+    --muted:#5B6472;
+    --gold:#C79A3D;
+    --gold-dim:#E8D6AA;
+    --success:#2E7D5B;
+    --success-bg:#E4F2EB;
+    --danger:#B3413A;
+    --danger-bg:#F7E7E5;
+    --line:#DBE0E8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  h1,h2,h3,.serif{font-family:'Source Serif 4',Georgia,serif;}
+  button{font-family:inherit;}
+  .app-shell{max-width:960px;margin:0 auto;padding:0 20px 60px;}
+  .topbar{
+    background:var(--navy);
+    color:#fff;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:3px solid var(--gold);
+  }
+  .topbar .brand{display:flex;align-items:baseline;gap:10px;}
+  .topbar .brand .mark{
+    font-family:'Source Serif 4',serif;font-weight:700;font-size:20px;letter-spacing:0.2px;
+  }
+  .topbar .brand .tag{font-size:12.5px;color:var(--gold-dim);}
+  .topbar nav{display:flex;gap:8px;}
+  .topbar nav button{
+    background:transparent;border:1px solid rgba(255,255,255,0.25);color:#fff;
+    padding:7px 14px;border-radius:6px;font-size:13.5px;cursor:pointer;
+  }
+  .topbar nav button:hover{background:rgba(255,255,255,0.12);}
+  .topbar nav button.active{background:var(--gold);border-color:var(--gold);color:var(--navy);font-weight:600;}
+
+  .screen{display:none;padding-top:32px;}
+  .screen.visible{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:28px;
+  }
+  .card + .card{margin-top:16px;}
+
+  .hero-title{font-size:30px;font-weight:600;margin:0 0 6px;}
+  .hero-sub{color:var(--muted);font-size:15px;margin:0 0 26px;max-width:60ch;}
+
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:13.5px;color:var(--muted);margin-bottom:6px;}
+  .field input[type=text], .field select{
+    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:6px;
+    font-size:15px;background:#fbfbfc;color:var(--ink);
+  }
+  .field input[type=text]:focus, .field select:focus{outline:2px solid var(--navy-3);outline-offset:1px;background:#fff;}
+
+  .choice-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;}
+  @media (max-width:640px){.choice-row{grid-template-columns:1fr;}}
+  .choice-card{
+    border:1.5px solid var(--line);border-radius:8px;padding:18px;cursor:pointer;
+    background:#fdfdfd;transition:border-color .15s, background .15s;
+  }
+  .choice-card:hover{border-color:var(--navy-3);}
+  .choice-card.selected{border-color:var(--gold);background:#FFFBF2;}
+  .choice-card .num{font-family:'Source Serif 4',serif;font-size:26px;font-weight:600;color:var(--navy);}
+  .choice-card .desc{font-size:13px;color:var(--muted);margin-top:4px;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--navy);color:#fff;border:none;padding:12px 22px;
+    border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;
+  }
+  .btn:hover{background:var(--navy-3);}
+  .btn.secondary{background:transparent;color:var(--navy);border:1.5px solid var(--navy);}
+  .btn.secondary:hover{background:#eef1f6;}
+  .btn.gold{background:var(--gold);color:var(--navy);}
+  .btn.gold:hover{background:#b98a2f;}
+  .btn:disabled{opacity:0.45;cursor:not-allowed;}
+  .btn-row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+
+  /* Quiz screen */
+  .quiz-layout{display:grid;grid-template-columns:1fr 220px;gap:18px;align-items:start;}
+  @media (max-width:760px){.quiz-layout{grid-template-columns:1fr;}}
+  .quiz-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .quiz-meta .badge{
+    background:var(--navy);color:#fff;padding:3px 10px;border-radius:12px;font-size:12px;margin-right:6px;
+  }
+  .quiz-meta .badge.diff-Mudah{background:var(--success);}
+  .quiz-meta .badge.diff-Sedang{background:var(--gold);color:var(--navy);}
+  .quiz-meta .badge.diff-Sulit{background:var(--danger);}
+  .progress-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:22px;}
+  .progress-bar .fill{height:100%;background:var(--gold);transition:width .2s;}
+
+  .question-text{font-size:16.5px;line-height:1.6;margin:0 0 20px;white-space:pre-wrap;}
+  .opsi-item{
+    display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:7px;
+    padding:12px 14px;margin-bottom:10px;cursor:pointer;background:#fdfdfd;
+  }
+  .opsi-item:hover{border-color:var(--navy-3);}
+  .opsi-item.picked{border-color:var(--navy);background:#EEF2F9;}
+  .opsi-item input{margin-top:3px;}
+  .opsi-item .txt{font-size:14.5px;}
+
+  table.kategori-tbl{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px;}
+  table.kategori-tbl th{
+    text-align:left;background:var(--navy);color:#fff;padding:9px 10px;font-weight:600;font-size:13px;
+  }
+  table.kategori-tbl th.center, table.kategori-tbl td.center{text-align:center;}
+  table.kategori-tbl td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.kategori-tbl tr:nth-child(even) td{background:#fafbfc;}
+  table.kategori-tbl input{cursor:pointer;}
+
+  .navigator{
+    background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px;position:sticky;top:14px;
+  }
+  .navigator h4{margin:0 0 10px;font-size:13px;color:var(--muted);font-weight:600;}
+  .nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+  .nav-grid button{
+    width:100%;aspect-ratio:1;border:1px solid var(--line);background:#fff;border-radius:4px;
+    font-size:12.5px;cursor:pointer;color:var(--ink);
+  }
+  .nav-grid button.answered{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .nav-grid button.current{border:2px solid var(--gold);}
+  .nav-legend{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:12px;color:var(--muted);}
+  .nav-legend span{display:flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:2px;display:inline-block;}
+
+  /* Result screen */
+  .score-hero{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
+  .score-circle{
+    width:120px;height:120px;border-radius:50%;border:8px solid var(--navy);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;flex-shrink:0;
+  }
+  .score-circle .n{font-family:'Source Serif 4',serif;font-size:30px;font-weight:700;color:var(--navy);}
+  .score-circle .d{font-size:11px;color:var(--muted);}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;}
+  @media (max-width:640px){.stat-grid{grid-template-columns:1fr 1fr;}}
+  .stat-box{border:1px solid var(--line);border-radius:6px;padding:14px;text-align:center;}
+  .stat-box .v{font-family:'Source Serif 4',serif;font-size:22px;font-weight:700;}
+  .stat-box .l{font-size:12px;color:var(--muted);margin-top:2px;}
+
+  .breakdown-title{font-size:14px;font-weight:600;margin:26px 0 10px;color:var(--navy);}
+  .bar-row{display:grid;grid-template-columns:170px 1fr 90px;align-items:center;gap:10px;margin-bottom:8px;font-size:13px;}
+  .bar-track{background:var(--line);height:14px;border-radius:7px;overflow:hidden;}
+  .bar-fill{background:var(--success);height:100%;}
+  .bar-fill.mid{background:var(--gold);}
+  .bar-fill.low{background:var(--danger);}
+
+  .review-item{border-bottom:1px solid var(--line);padding:14px 0;}
+  .review-item:last-child{border-bottom:none;}
+  .review-item .rq{font-size:14px;margin-bottom:6px;}
+  .review-item .rtag{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:10px;margin-right:6px;}
+  .rtag.ok{background:var(--success-bg);color:var(--success);}
+  .rtag.no{background:var(--danger-bg);color:var(--danger);}
+
+  /* Teacher */
+  .filter-row{display:flex;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+  .filter-row select{padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:14px;}
+  .overview-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+  @media (max-width:760px){.overview-cards{grid-template-columns:1fr 1fr;}}
+  .ocard{background:var(--navy);color:#fff;border-radius:6px;padding:16px;}
+  .ocard .v{font-family:'Source Serif 4',serif;font-size:26px;font-weight:700;}
+  .ocard .l{font-size:12.5px;color:var(--gold-dim);margin-top:2px;}
+
+  table.data-tbl{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.data-tbl th{text-align:left;padding:9px 10px;border-bottom:2px solid var(--navy);color:var(--navy);font-size:12.5px;}
+  table.data-tbl td{padding:9px 10px;border-bottom:1px solid var(--line);}
+  table.data-tbl tr:hover td{background:#f7f9fb;}
+
+  .section-title{font-size:17px;font-weight:600;margin:30px 0 12px;color:var(--navy);}
+  .empty-state{color:var(--muted);font-size:14px;padding:30px 0;text-align:center;}
+  .top-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+  .small-note{font-size:12.5px;color:var(--muted);margin-top:10px;}
+  .link-btn{background:none;border:none;color:var(--navy-3);text-decoration:underline;cursor:pointer;font-size:13px;padding:0;}
+
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(20,25,35,0.55);
+    display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;
+  }
+  .modal-box{
+    background:#fff;border-radius:8px;padding:24px;max-width:420px;width:100%;
+    box-shadow:0 10px 40px rgba(0,0,0,0.25);
+  }
+  .modal-box .modal-msg{font-size:15px;line-height:1.55;margin:0 0 20px;color:var(--ink);}
+  .modal-box .modal-actions{display:flex;justify-content:flex-end;gap:10px;}
+  .hero-banner{
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+    border-radius:6px;padding:32px 30px;margin-top:26px;color:#fff;position:relative;overflow:hidden;
+    display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+  }
+  .hero-banner::before{
+    content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle, rgba(199,154,61,0.25) 0%, rgba(199,154,61,0) 70%);
+  }
+  .hero-banner-text{flex:1;min-width:240px;position:relative;z-index:1;}
+  .hero-banner-text .eyebrow{
+    display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--gold-dim);
+    letter-spacing:0.3px;margin-bottom:10px;background:rgba(255,255,255,0.08);padding:4px 10px;border-radius:12px;
+  }
+  .hero-banner-text h1{font-family:'Source Serif 4',serif;font-size:28px;font-weight:600;margin:0 0 8px;line-height:1.25;}
+  .hero-banner-text p{font-size:14.5px;color:#DCE3EE;margin:0;max-width:52ch;line-height:1.6;}
+  .hero-illustration{flex-shrink:0;position:relative;z-index:1;width:150px;height:120px;}
+  .feature-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;position:relative;z-index:1;}
+  .feature-pill{
+    display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);
+    padding:6px 12px;border-radius:14px;font-size:12.5px;color:#EEF1F6;
+  }
+  .feature-pill svg{width:14px;height:14px;flex-shrink:0;}
+
+  .form-card{margin-top:20px;}
+  .field-icon-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:640px){.field-icon-row{grid-template-columns:1fr;}}
+  .field-with-icon{position:relative;}
+  .field-with-icon svg{position:absolute;left:12px;top:38px;width:16px;height:16px;color:var(--muted);}
+  .field-with-icon input, .field-with-icon select{padding-left:36px;}
+
+  .choice-card{position:relative;}
+  .choice-card .ribbon{
+    position:absolute;top:-9px;right:14px;background:var(--gold);color:var(--navy);font-size:10.5px;
+    font-weight:700;padding:2px 9px;border-radius:9px;letter-spacing:0.2px;
+  }
+  .choice-card .icon-badge{
+    width:34px;height:34px;border-radius:8px;background:#EEF2F9;display:flex;align-items:center;justify-content:center;
+    margin-bottom:10px;color:var(--navy);
+  }
+  .choice-card .icon-badge svg{width:18px;height:18px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="mark">TKA Ekonomi</span>
+    <span class="tag">Latihan &amp; Rekap SMA Negeri 1 Kelumpang Barat</span>
+  </div>
+  <nav>
+    <button id="nav-siswa" class="active" onclick="goTo('start')">Siswa</button>
+    <button id="nav-guru" onclick="goTo('teacherGate')">Guru</button>
+  </nav>
+</div>
+
+<div class="app-shell">
+
+  <!-- START -->
+  <section id="screen-start" class="screen visible">
+    <div class="hero-banner">
+      <div class="hero-banner-text">
+        <span class="eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z"/></svg>
+          Latihan Terarah untuk Tes Kemampuan Akademik
+        </span>
+        <h1>Asah Kemampuan Analisis Ekonomimu</h1>
+        <p>50 soal berbasis data, tabel, dan studi kasus nyata — dirancang untuk melatih kemampuan menganalisis, bukan sekadar menghafal. Isi data diri di bawah untuk memulai.</p>
+        <div class="feature-pills">
+          <span class="feature-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            10 Topik Materi
+          </span>
+          <span class="feature-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+            Soal Berbasis Data &amp; Analisis
+          </span>
+          <span class="feature-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+            Ada Pembahasan Lengkap
+          </span>
+        </div>
+      </div>
+      <div class="hero-illustration">
+        <svg viewBox="0 0 160 130" width="150" height="120">
+          <line x1="12" y1="10" x2="12" y2="112" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+          <line x1="12" y1="112" x2="150" y2="112" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+          <rect x="26" y="78" width="16" height="34" rx="2" fill="#E8D6AA"/>
+          <rect x="52" y="58" width="16" height="54" rx="2" fill="#C79A3D"/>
+          <rect x="78" y="34" width="16" height="78" rx="2" fill="#E8D6AA"/>
+          <rect x="104" y="66" width="16" height="46" rx="2" fill="#C79A3D"/>
+          <polyline points="30,70 60,48 86,26 112,58" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="112" cy="58" r="4.5" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card form-card">
+      <div class="field-icon-row">
+        <div class="field field-with-icon">
+          <label for="inp-nama">Nama lengkap</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" id="inp-nama" placeholder="Tulis nama lengkap">
+        </div>
+        <div class="field field-with-icon">
+          <label for="inp-kelas">Kelas</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>
+          <select id="inp-kelas">
+            <option value="">Pilih kelas</option>
+            <option>XII A</option>
+            <option>XII B</option>
+          </select>
+        </div>
+      </div>
+
+      <label style="display:block;font-size:13.5px;color:var(--muted);margin-bottom:2px;">Jumlah soal</label>
+      <div class="choice-row">
+        <div class="choice-card" id="pick-25" onclick="pickJumlah(25)">
+          <span class="ribbon">Disarankan</span>
+          <div class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="num">25 Soal</div>
+          <div class="desc">Latihan singkat ±30 menit, mewakili seluruh materi secara proporsional.</div>
+        </div>
+        <div class="choice-card" id="pick-50" onclick="pickJumlah(50)">
+          <div class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="num">50 Soal</div>
+          <div class="desc">Simulasi penuh, seluruh bank soal dikerjakan seperti tes sesungguhnya.</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn gold" id="btn-mulai" onclick="mulaiKuis()" disabled>Mulai mengerjakan</button>
+      </div>
+      <p class="small-note" id="start-error" style="color:var(--danger);"></p>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-layout">
+      <div class="card" id="quiz-card">
+        <div class="quiz-meta">
+          <div id="quiz-badges"></div>
+          <div id="quiz-pos"></div>
+        </div>
+        <div class="progress-bar"><div class="fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="question-text" id="question-text"></div>
+        <div id="question-body"></div>
+        <div class="btn-row">
+          <button class="btn secondary" id="btn-prev" onclick="prevQuestion()">Sebelumnya</button>
+          <button class="btn" id="btn-next" onclick="nextQuestion()">Berikutnya</button>
+          <button class="btn gold" id="btn-selesai" style="display:none;" onclick="konfirmasiSelesai()">Selesai &amp; kumpulkan</button>
+        </div>
+      </div>
+      <div class="navigator">
+        <h4>Navigasi soal</h4>
+        <div class="nav-grid" id="nav-grid"></div>
+        <div class="nav-legend">
+          <span><span class="dot" style="background:var(--navy)"></span> Sudah dijawab</span>
+          <span><span class="dot" style="background:#fff;border:1px solid var(--line)"></span> Belum dijawab</span>
+          <span><span class="dot" style="background:var(--gold);width:10px;height:10px;border-radius:2px;border:2px solid var(--gold)"></span> Sedang dibuka</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="screen-result" class="screen">
+    <div class="card">
+      <h2 class="hero-title" style="margin-bottom:2px;">Hasil pengerjaan</h2>
+      <p class="hero-sub" id="result-sub"></p>
+      <div class="score-hero">
+        <div class="score-circle"><div class="n" id="score-pct">0%</div><div class="d">skor</div></div>
+        <div>
+          <div style="font-size:14px;color:var(--muted);">Jawaban benar</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:700;color:var(--success);" id="score-benar">0</div>
+        </div>
+        <div>
+          <div style="font-size:14px;color:var(--muted);">Jawaban salah</div>
+          <div style="font-family:'Source Serif 4',serif;font-size:24px;font-weight:700;color:var(--danger);" id="score-salah">0</div>
+        </div>
+      </div>
+
+      <div class="breakdown-title">Rincian per tipe soal</div>
+      <div id="bd-tipe"></div>
+      <div class="breakdown-title">Rincian per materi</div>
+      <div id="bd-materi"></div>
+
+      <div class="btn-row">
+        <button class="btn secondary" onclick="toggleReview()">Tinjau jawaban</button>
+        <button class="btn secondary" onclick="toggleKodeHasil()">Kode hasil</button>
+        <button class="btn gold" onclick="ulangiKuis()">Kerjakan lagi</button>
+      </div>
+      <div id="kode-hasil-box" style="display:none;margin-top:16px;background:#f7f9fb;border:1px dashed var(--line);border-radius:6px;padding:14px;">
+        <p style="font-size:13px;color:var(--muted);margin:0 0 8px;">Nilai kamu sudah tersimpan otomatis. Jika ternyata nilai ini tidak muncul di dashboard guru (misalnya karena aplikasi dibuka lewat file yang dibagikan di luar Claude), salin kode di bawah ini dan kirimkan ke guru lewat WhatsApp/Telegram agar bisa ditambahkan secara manual.</p>
+        <textarea id="kode-hasil-text" readonly style="width:100%;height:70px;font-size:11.5px;font-family:monospace;padding:8px;border:1px solid var(--line);border-radius:4px;resize:vertical;"></textarea>
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn secondary" onclick="salinKodeHasil()">Salin kode</button>
+        </div>
+      </div>
+      <div id="review-list" style="display:none;margin-top:20px;"></div>
+    </div>
+  </section>
+
+  <!-- TEACHER GATE -->
+  <section id="screen-teacherGate" class="screen">
+    <div class="card" style="max-width:420px;">
+      <h2 class="hero-title" style="font-size:22px;">Masuk sebagai guru</h2>
+      <p class="hero-sub">Masukkan kode akses untuk melihat rekap nilai seluruh siswa.</p>
+      <div class="field">
+        <label for="inp-pass">Kode akses</label>
+        <input type="text" id="inp-pass" placeholder="Kode akses guru">
+      </div>
+      <div class="btn-row">
+        <button class="btn gold" onclick="cekPasscode()">Masuk</button>
+      </div>
+      <p class="small-note" id="pass-error" style="color:var(--danger);"></p>
+    </div>
+  </section>
+
+  <!-- TEACHER DASHBOARD -->
+  <section id="screen-teacherDash" class="screen">
+    <div class="card">
+      <div class="top-actions">
+        <h2 class="hero-title" style="margin:0;font-size:22px;">Dashboard rekap nilai</h2>
+        <button class="link-btn" onclick="exportCSV()">Unduh rekap (CSV)</button>
+      </div>
+      <div class="filter-row">
+        <label style="font-size:13px;color:var(--muted);">Kelas:</label>
+        <select id="filter-kelas" onchange="renderDashboard()">
+          <option value="Semua">Semua kelas</option>
+          <option>XII A</option><option>XII B</option>
+        </select>
+        <button class="link-btn" onclick="muatUlangDashboard()">Muat ulang data</button>
+        <button class="link-btn" onclick="toggleImporBox()">+ Tambahkan hasil manual (Kode Hasil)</button>
+      </div>
+      <p class="small-note" id="sync-status" style="margin:-6px 0 16px;"></p>
+
+      <div id="impor-box" style="display:none;background:#f7f9fb;border:1px dashed var(--line);border-radius:6px;padding:14px;margin-bottom:20px;">
+        <p style="font-size:13px;color:var(--muted);margin:0 0 8px;">Penyimpanan otomatis hanya berfungsi saat aplikasi dibuka langsung di dalam Claude. Jika ada siswa mengerjakan lewat file yang dibagikan di luar Claude (dibuka di browser biasa), nilainya tidak otomatis masuk ke sini — minta siswa tersebut mengirimkan "Kode Hasil" miliknya, lalu tempelkan di bawah ini (satu kode per baris, boleh beberapa sekaligus).</p>
+        <textarea id="impor-kode-text" placeholder="Tempel kode hasil di sini, satu per baris" style="width:100%;height:90px;font-size:11.5px;font-family:monospace;padding:8px;border:1px solid var(--line);border-radius:4px;resize:vertical;"></textarea>
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn gold" onclick="imporKodeHasil()">Tambahkan ke rekap</button>
+        </div>
+        <p class="small-note" id="impor-status"></p>
+      </div>
+
+      <div class="overview-cards" id="ov-cards"></div>
+
+      <div class="section-title">Rekap per kelas</div>
+      <div id="tbl-perkelas"></div>
+
+      <div class="top-actions" style="margin-top:30px;">
+        <div class="section-title" style="margin:0;">Ringkasan per siswa (percobaan terbaru)</div>
+        <button class="link-btn" onclick="toggleRiwayat()" id="btn-toggle-riwayat">Lihat seluruh riwayat pengerjaan</button>
+      </div>
+      <div id="tbl-detail"></div>
+      <div id="tbl-riwayat" style="display:none;margin-top:16px;">
+        <div class="section-title" style="font-size:14px;">Seluruh riwayat pengerjaan (termasuk percobaan berulang)</div>
+        <div id="tbl-riwayat-isi"></div>
+      </div>
+
+      <div class="section-title">Rincian ketercapaian per tipe soal</div>
+      <div id="dash-tipe"></div>
+      <div class="section-title">Rincian ketercapaian per materi</div>
+      <div id="dash-materi"></div>
+
+      <div class="section-title">Soal yang paling banyak dijawab salah</div>
+      <div id="dash-soal-sulit"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   BANK SOAL — 50 soal, mengikuti struktur elemen/subelemen
+   pada Soal TKA Ekonomi (Pilihan) SMA/MA/SMK Tahun 2025
+   ========================================================= */
+const MATERI = {
+  M1:'Kelangkaan, Biaya Peluang & Kegiatan Ekonomi',
+  M2:'Permintaan, Penawaran & Keseimbangan Pasar',
+  M3:'Pendapatan Nasional & Pertumbuhan Ekonomi',
+  M4:'Ketenagakerjaan',
+  M5:'Indeks Harga & Inflasi',
+  M6:'Bank Sentral & Kebijakan Moneter',
+  M7:'Kebijakan Fiskal & Perpajakan',
+  M8:'Manajemen Badan Usaha & Koperasi',
+  M9:'Kerja Sama Ekonomi Internasional',
+  M10:'Persamaan Dasar Akuntansi'
+};
+
+const QUESTIONS = [
+{id:1, elemen:'Konsep Dasar Ilmu Ekonomi', materi:MATERI.M1, tipe:'pg', kesulitan:'Sulit',
+ teks:'Di kawasan pinggiran kota besar, alih fungsi lahan pertanian menjadi kawasan perumahan dan komersial terus meningkat. Akibatnya, harga bahan pangan lokal naik karena pasokan terbatas dan biaya distribusi dari luar kota meningkat. Petani kecil kehilangan lahannya karena tawaran harga tinggi dari pengembang, namun setelah menjual, sebagian besar tidak mampu lagi bertani. Pemerintah kota mempertimbangkan opsi dengan membatasi izin pengembang, menyediakan insentif bertani di lahan sempit, atau mendorong urban farming dan lahan produktif vertikal.\n\nApa penyebab peralihan lahan dan solusi berdasarkan prinsip ekonomi dari masalah tersebut?',
+ opsi:[
+  {id:'a', teks:'Meningkatnya permintaan hasil pertanian diperkotaan dan solusi menghentikan seluruh pembangunan perumahan baru di wilayah tersebut.'},
+  {id:'b', teks:'Memberi peringatan kepada pemilik lahan agar tidak membangun dan solusinya memberi bantuan tunai kepada petani agar tidak menjual lahan mereka.'},
+  {id:'c', teks:'Meningkatnya pembangunan gedung-gedung berbanding terbalik dengan ketersediaan tanah dan solusinya menetapkan zona perlindungan lahan.'},
+  {id:'d', teks:'Terjadinya pemekaran wilayah dipinggiran kota dan solusinya menurunkan pajak pembangunan untuk menurunkan harga rumah.'},
+  {id:'e', teks:'Konflik kepentingan karena adanya persaingan ketat dan solusinya mengimpor bahan pangan dari luar kota untuk menutupi kekurangan.'}
+ ], kunci:'c'},
+
+{id:2, elemen:'Konsep Dasar Ilmu Ekonomi', materi:MATERI.M1, tipe:'pg', kesulitan:'Sulit',
+ teks:'Safia baru saja menyelesaikan pendidikan S1. Setelah lulus kuliah, ia dihadapkan pada tiga pilihan, yaitu bekerja di salah satu perusahaan kolega orang tuanya dengan gaji Rp10.000.000,00 per bulan, menempuh pendidikan S2 di dalam negeri dengan jalur beasiswa dan mendapatkan uang saku sebesar Rp2.000.000,00 setiap bulannya, serta membuka usaha di bidang kuliner yaitu steak tendaan bersama salah satu temannya dengan perkiraan omset sebesar Rp16.000.000,00 per bulan.\n\nBerapakah jumlah biaya peluang yang dikorbankan oleh Safia apabila ia memilih untuk membuka usaha di bidang kuliner?',
+ opsi:[
+  {id:'a', teks:'Rp18.000.000,00.'},
+  {id:'b', teks:'Rp16.000.000,00.'},
+  {id:'c', teks:'Rp12.000.000,00.'},
+  {id:'d', teks:'Rp10.000.000,00.'},
+  {id:'e', teks:'Rp2.000.000,00.'}
+ ], kunci:'d'},
+
+{id:3, elemen:'Konsep Dasar Ilmu Ekonomi', materi:MATERI.M1, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perusahaan minuman sehat "Segar Abadi" mengalami kenaikan harga bahan baku utama seperti jahe, madu, dan lemon akibat gagal panen di daerah penghasil. Jika perusahaan tetap menggunakan bahan yang sama, biaya produksi meningkat dan keuntungan menurun. Namun jika mengganti bahan baku dengan bahan sintetis, harga bisa ditekan, tetapi kualitas produk menurun dan kepercayaan konsumen bisa terganggu.\n\nBerdasarkan ilustrasi tersebut, manakah tindakan yang paling tepat diambil oleh perusahaan dengan mempertimbangkan prinsip ekonomi?',
+ opsi:[
+  {id:'a', teks:'Mencari alternatif bahan baku alami dari daerah lain dengan harga lebih kompetitif.'},
+  {id:'b', teks:'Mengganti bahan alami dengan bahan sintetis agar biaya produksi murah dan harga produk tetap.'},
+  {id:'c', teks:'Mengurangi produksi agar tidak mengalami kerugian besar sampai harga bahan baku kembali normal.'},
+  {id:'d', teks:'Menurunkan kualitas produk untuk menjaga keuntungan dan keberlangsungan perusahaan.'},
+  {id:'e', teks:'Menaikkan harga jual dua kali lipat agar perusahaan tetap memperoleh keuntungan dan keberlangsungan usaha tetap terjaga.'}
+ ], kunci:'a'},
+
+{id:4, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M2, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perusahaan "Adiwastra Jaya" merupakan perusahaan yang memproduksi berbagai macam pakaian jadi dalam jumlah besar sehingga perusahaan tersebut memiliki tenaga kerja yang cukup banyak. Ketika pemerintah menetapkan Kenaikan Upah Minimum Provinsi (UMP) tahun 2025 sebesar 6,5% dari UMP tahun sebelumnya, maka biaya produksi Perusahaan "Adiwastra Jaya" mengalami kenaikan. Kenaikan biaya produksi tersebut akan berdampak pada keseimbangan pasar yaitu ....',
+ opsi:[
+  {id:'a', teks:'harga naik dan jumlah barang tetap'},
+  {id:'b', teks:'harga naik dan jumlah barang turun'},
+  {id:'c', teks:'harga naik dan jumlah barang naik'},
+  {id:'d', teks:'harga turun dan jumlah barang naik'},
+  {id:'e', teks:'harga turun dan jumlah barang turun'}
+ ], kunci:'b'},
+
+{id:5, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M2, tipe:'pg', kesulitan:'Sulit',
+ teks:'Toko "Kue Impian" merupakan toko bahan-bahan kue yang terkenal di daerahnya. Toko ini menjual berbagai macam kebutuhan untuk membuat kue seperti halnya tepung, telur, dan gula. Berikut ini fungsi penawaran dan harga dari ketiga bahan tersebut.\n\nTepung: Qs = -1250 + 0,25P, harga jual Rp15.000,00/kg\nTelur: Qs = 500 + 0,04P, harga jual Rp30.000,00/kg\nGula: Qs = -1200 + 0,3P, harga jual Rp20.000,00/kg\n\nJika semua harga jual dari ketiga bahan tersebut naik sebesar Rp3.000,00/kg maka berapakah jumlah tepung, telur, dan gula yang ditawarkan Toko "Kue Impian"?',
+ opsi:[
+  {id:'a', teks:'Tepung 3.250kg, Telur 1.820kg, dan Gula 5.700kg.'},
+  {id:'b', teks:'Tepung 3.250kg, Telur 1.700kg, dan Gula 5.700kg.'},
+  {id:'c', teks:'Tepung 3.250kg, Telur 1.700kg, dan Gula 4.800kg.'},
+  {id:'d', teks:'Tepung 2.500kg, Telur 1.700kg, dan Gula 4.800kg.'},
+  {id:'e', teks:'Tepung 2.500kg, Telur 1.820kg, dan Gula 4.800kg.'}
+ ], kunci:'a'},
+
+{id:6, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M2, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Pasar komoditas barang konsumsi X memiliki fungsi permintaan Qd = -20P + 500 dan fungsi penawaran Qs = 5P + 100. Pemerintah menetapkan pajak untuk barang tersebut yaitu sebesar Rp25,00 per unit. Manakah kesimpulan yang tepat berdasarkan kondisi tersebut? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Kuantitas keseimbangan sebelum pajak yaitu sebesar 180 unit dan setelah pajak sebesar 80 unit.', benar:true},
+  {id:'b', teks:'Terjadi penurunan harga barang sebesar Rp5,00.', benar:false},
+  {id:'c', teks:'Terjadi kenaikan harga barang sebesar Rp5,00.', benar:true},
+  {id:'d', teks:'Kuantitas barang mengalami penurunan sebanyak 100 unit.', benar:true},
+  {id:'e', teks:'Titik harga keseimbangan sebelum pajak yaitu Rp16,00 dan setelah pajak yaitu Rp21,00.', benar:true}
+ ]},
+
+{id:7, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M2, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan kurva permintaan sepeda motor berikut ini. Pada awalnya, kurva permintaan sepeda motor berada pada titik D1. Sepeda motor dan BBM merupakan barang komplementer sehingga ketika terjadi kenaikan harga BBM, maka analisis perubahan permintaan sepeda motor yang baru adalah....',
+ opsi:[
+  {id:'a', teks:'kurva permintaan sepeda motor bergerak ke atas (D2)'},
+  {id:'b', teks:'kurva permintaan sepeda motor bergerak kebawah (D3)'},
+  {id:'c', teks:'jumlah permintaan sepeda motor bergeser ke kanan (Q2)'},
+  {id:'d', teks:'jumlah permintaan sepeda motor bergeser ke kiri (Q3)'},
+  {id:'e', teks:'jumlah permintaan tetap, tidak mengalami perubahan (Q1)'}
+ ], kunci:'b'},
+
+{id:8, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M3, tipe:'pg', kesulitan:'Sulit',
+ teks:'Berikut ini data pendapatan nasional dari Negara "Alamanda" tahun 2025 (dalam miliar):\nProduk domestik bruto (PDB) Rp1.200.000; Produk netto luar negeri Rp80.000; Pajak langsung Rp30.000; Pajak tidak langsung Rp10.000; Penyusutan barang modal Rp15.000; Iuran asuransi Rp30.000; Laba ditahan Rp8.000; Pajak perseroan Rp9.000; Transfer payment Rp12.000; Konsumsi Rumah Tangga Rp750.000; Investasi Rp100.000; Pengeluaran Pemerintah Rp100.000; Ekspor Rp500.000; Impor Rp250.000.\n\nBerdasarkan data tersebut, besarnya Disposible Income (DI) adalah ....',
+ opsi:[
+  {id:'a', teks:'Rp1.030.000 miliar'},
+  {id:'b', teks:'Rp1.166.000 miliar'},
+  {id:'c', teks:'Rp1.190.000 miliar'},
+  {id:'d', teks:'Rp1.220.000 miliar'},
+  {id:'e', teks:'Rp1.284.000 miliar'}
+ ], kunci:'c'},
+
+{id:9, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M3, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Pertumbuhan ekonomi adalah aspek yang mendukung serta meningkatkan kemakmuran rakyat dalam suatu negara. Berdasarkan pernyataan tersebut, manakah faktor yang dapat memengaruhi pertumbuhan ekonomi suatu negara? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Munculnya inovasi dan penggunaan teknologi terbaru dalam kegiatan ekonomi.', benar:true},
+  {id:'b', teks:'Peningkatan dan pemerataan akses pendidikan di seluruh wilayah.', benar:true},
+  {id:'c', teks:'Meningkatnya akses layanan perbankan terutama dalam penyaluran kredit usaha.', benar:true},
+  {id:'d', teks:'Peningkatan pemberian bantuan sosial untuk masyarakat menengah bawah.', benar:false},
+  {id:'e', teks:'Kestabilan harga barang kebutuhan pokok dalam perekonomian negara.', benar:true}
+ ]},
+
+{id:10, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M3, tipe:'kategori', kesulitan:'Sulit',
+ teks:'Perhatikan data pertumbuhan ekonomi dan indeks gini di Indonesia tahun 2020 hingga 2024 berdasarkan data dari Badan Pusat Statistik (BPS):\n2020: Pertumbuhan -2,07% — Indeks Gini 0,381\n2021: Pertumbuhan 3,70% — Indeks Gini 0,384\n2022: Pertumbuhan 5,31% — Indeks Gini 0,384\n2023: Pertumbuhan 5,05% — Indeks Gini 0,388\n2024: Pertumbuhan 5,03% — Indeks Gini 0,379\n\nBerdasarkan data di atas, tentukan pernyataan berikut benar atau salah:',
+ pernyataan:[
+  {teks:'Peningkatan pertumbuhan ekonomi dari tahun 2021 hingga 2023 diikuti oleh peningkatan Indeks Gini, yang menunjukkan bahwa ketimpangan pendapatan meningkat.', benar:true},
+  {teks:'Penurunan Indeks Gini pada tahun 2024 menunjukkan bahwa pertumbuhan ekonomi yang stabil mulai dirasakan lebih merata oleh masyarakat.', benar:true},
+  {teks:'Setiap kali pertumbuhan ekonomi meningkat, Indeks Gini selalu menurun, menandakan distribusi pendapatan yang lebih merata.', benar:false}
+ ]},
+
+{id:11, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M3, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Berikut ini merupakan informasi terkait kondisi perekonomian negara Vietnam dan Indonesia pada tahun 2024.\nProduk Domestik Bruto (PDB): Vietnam 7,09% — Indonesia 5,03%\nPendapatan per kapita: Vietnam US$4.700 — Indonesia US$4.960\nIndeks Pembangunan Manusia: Vietnam 0,766 — Indonesia 0,750\n\nBerdasarkan informasi tersebut manakah pernyataan yang tepat terkait kondisi pembangunan ekonomi di kedua negara? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Nilai Indeks Pembangunan Manusia (IPM) kedua negara termasuk dalam kategori tinggi yang mencerminkan tingginya tingkat pendidikan, tingkat kesehatan, dan kesejahteraan penduduknya.', benar:true},
+  {id:'b', teks:'Tingkat laju pertumbuhan ekonomi pada Negara Indonesia lebih pesat dibandingkan dengan Negara Vietnam meningkat sebesar 2%.', benar:false},
+  {id:'c', teks:'Kedua negara termasuk dalam kategori negara berpendapatan menengah atas meskipun tingkat kesejahteraan penduduk negara Indonesia lebih tinggi dibandingkan negara Vietnam.', benar:false},
+  {id:'d', teks:'Tingkat kesejahateraan pada penduduk Negara Vietnam lebih tinggi dibandingkan penduduk Negara Indonesia.', benar:true},
+  {id:'e', teks:'Kapasitas produksi barang dan jasa kedua negara tersebut terbilang pesat sehingga mencerminkan terjadinya pembangunan ekonomi.', benar:true}
+ ]},
+
+{id:12, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M4, tipe:'kategori', kesulitan:'Sulit',
+ teks:'Perhatikan pernyataan tentang kondisi pengangguran berikut ini.\nMely baru saja lulus kuliah jurusan ekonomi pembangunan dari salah satu universitas ternama di kotanya, dan sedang berusaha mendapatkan pekerjaan pertamanya.\nYoga seorang lulusan SMA yang sedang mencoba melamar beberapa pekerjaan, namun Yoga belum juga mendapatkan panggilan akibat tidak memenuhi kualifikasi perusahaan.\nPratiwi mengundurkan diri dari pekerjaannya sebagai pegawai pemerintah daerah karena harus pindah ke luar kota mengikuti keluarganya.\nBagas menolak untuk menerima pekerjaan sebagai staf keuangan salah satu perusahaan karena upah yang ditawarkan perusahaan tidak sesuai dengan harapannya.\nAndi mengalami pemutusan hubungan kerja karena perusahaan tempatnya bekerja mengalami kerugian akibat menurunnya permintaan barang yang diproduksi perusahaannya.\n\nTentukan Benar atau Salah pernyataan berikut ini terkait jenis pengangguran yang dialami oleh masing-masing individu:',
+ pernyataan:[
+  {teks:'Mely dan Yoga merupakan pengangguran siklis.', benar:false},
+  {teks:'Mely dan Bagas merupakan pengangguran friksional.', benar:true},
+  {teks:'Andy dan Pratiwi merupakan pengangguran struktural.', benar:false}
+ ]},
+
+{id:13, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M4, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data BPS per Februari 2025 tentang Tingkat Pengangguran Terbuka (TPT) berdasarkan umur berikut ini!\n15-24 Tahun: 16,16%; 25-59 Tahun: 3,04%; >60 Tahun: 1,67%.\n\nMeskipun Tingkat Pengangguran Terbuka (TPT) secara nasional menurun menjadi 4,76%, kelompok usia muda (15-24 Tahun) tetap menjadi penyumbang tertinggi pengangguran dengan TPT mencapai 16,16%. Kondisi ini menunjukkan adanya permasalahan serius terkait ketidaksesuaian antara keterampilan lulusan muda dan kebutuhan dunia kerja. Berdasarkan informasi, solusi apa yang paling tepat untuk mengatasi permasalahan tersebut?',
+ opsi:[
+  {id:'a', teks:'Memberikan bantuan keuangan rutin kepada lulusan muda hingga mendapat pekerjaan tetap.'},
+  {id:'b', teks:'Menurunkan batas usia minimum bekerja agar remaja dapat memasuki dunia kerja lebih awal.'},
+  {id:'c', teks:'Mewajibkan perusahaan swasta mempekerjakan lulusan muda tanpa persyaratan memiliki pengalaman kerja.'},
+  {id:'d', teks:'Membangun lebih banyak industri padat karya di daerah dengan tingkat pengangguran muda yang tinggi.'},
+  {id:'e', teks:'Menyediakan pelatihan keterampilan di bidang kewirausahaan industri melalui integrasi dalam sistem pendidikan.'}
+ ], kunci:'e'},
+
+{id:14, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M5, tipe:'pg', kesulitan:'Sulit',
+ teks:'Pada kuartal pertama tahun ini, Badan Pusat Statistik (BPS) mencatat lonjakan harga pada sejumlah bahan pokok seperti beras, minyak goreng, telur ayam, dan cabai rawit di berbagai daerah di Indonesia. Kenaikan harga ini terjadi menjelang bulan Ramadan, di mana konsumsi masyarakat meningkat pesat. Di sisi lain, hasil panen beberapa komoditas menurun akibat curah hujan yang sangat tinggi dan banjir di sejumlah sentra pertanian.\n\nBerdasarkan ilustrasi tersebut, faktor utama yang menyebabkan inflasi adalah ....',
+ opsi:[
+  {id:'a', teks:'melemahnya nilai tukar Rupiah terhadap dolar Amerika Serikat'},
+  {id:'b', teks:'kenaikan upah buruh dan harga bahan baku industri'},
+  {id:'c', teks:'peningkatan biaya distribusi karena kenaikan harga Bahan Bakar Minyak (BBM)'},
+  {id:'d', teks:'penurunan produksi akibat perpindahan tenaga kerja ke sektor jasa'},
+  {id:'e', teks:'peningkatan permintaan barang yang lebih cepat dari pasokannya'}
+ ], kunci:'e'},
+
+{id:15, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M5, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data harga bahan pokok di daerah Adidaya berikut ini.\nDaging ayam (Kg): 2024 Rp40.000 — 2025 Rp45.000\nTelur (Kg): 2024 Rp24.000 — 2025 Rp26.000\nGula (Kg): 2024 Rp22.000 — 2025 Rp25.000\nCabai merah (Kg): 2024 Rp14.000 — 2025 Rp19.000\n\nBesarnya nilai Indeks Harga Konsumen (IHK) tahun 2025 dengan metode agregatif sederhana adalah ....',
+ opsi:[
+  {id:'a', teks:'115%'},
+  {id:'b', teks:'111,62%'},
+  {id:'c', teks:'110%'},
+  {id:'d', teks:'95,6%'},
+  {id:'e', teks:'90,9%'}
+ ], kunci:'a'},
+
+{id:16, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M5, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data Indeks Harga Konsumen (IHK) berikut, berdasarkan tiga sektor dalam empat periode. Dengan tahun 2022 sebagai indeks harga tahun dasar.\nSektor Pariwisata: 2022=100, 2023=110, 2024=112, 2025=117\nSektor Transportasi: 2022=100, 2023=107, 2024=115, 2025=116\nSektor Kesehatan: 2022=100, 2023=109, 2024=114, 2025=118\n\nBerdasarkan tabel tersebut, manakah sektor yang paling berdampak terhadap tingkat inflasi?',
+ opsi:[
+  {id:'a', teks:'Sektor pariwisata memberikan dampak tertinggi terhadap inflasi karena mengalami kenaikan IHK sebesar 17% selama periode 2022–2025.'},
+  {id:'b', teks:'Sektor transportasi menjadi penyumbang inflasi terbesar karena memiliki lonjakan indeks paling tajam pada tahun 2024.'},
+  {id:'c', teks:'Kenaikan indeks sektor kesehatan relatif rendah, sehingga tidak signifikan terhadap inflasi nasional.'},
+  {id:'d', teks:'Semua sektor mengalami kenaikan IHK yang sama, sehingga dampaknya terhadap inflasi dianggap setara.'},
+  {id:'e', teks:'Sektor kesehatan memberikan dampak terbesar karena mengalami kenaikan indeks harga tertinggi selama periode 2022–2025.'}
+ ], kunci:'e'},
+
+{id:17, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M6, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Bank Sentral bertanggung jawab agar keuangan suatu negara tetap stabil. Berikut ini mana yang merupakan peran dan fungsi Bank Indonesia? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Mengatur suku bunga acuan untuk mengendalikan inflasi', benar:true},
+  {id:'b', teks:'Menyediakan layanan giro, tabungan, dan deposito untuk masyarakat', benar:false},
+  {id:'c', teks:'Mengawasi kelancaran sistem pembayaran nasional', benar:true},
+  {id:'d', teks:'Menyalurkan kredit langsung kepada pelaku usaha kecil', benar:false},
+  {id:'e', teks:'Menjaga stabilitas sistem keuangan nasional', benar:true}
+ ]},
+
+{id:18, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M6, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Di Indonesia, momen Hari Raya telah menjadi bagian penting dari siklus ekonomi tahunan. Pada periode ini, terjadi peningkatan aktivitas ekonomi masyarakat yang ditandai dengan percepatan peredaran uang dan peningkatan konsumsi rumah tangga. Efek kenaikan upah dari THR mendorong peningkatan konsumsi yang kemudian berimbas pada kenaikan harga. Berdasarkan ilustrasi tersebut, kebijakan moneter apa yang sesuai untuk mengantisipasi kondisi tersebut? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Menaikkan suku bunga simpanan untuk mendorong peningkatan tabungan masyarakat di perbankan.', benar:true},
+  {id:'b', teks:'Menjual surat berharga untuk menarik dana masyarakat dan mendukung pembiayaan fiskal.', benar:true},
+  {id:'c', teks:'Menurunkan suku bunga simpanan guna mengalihkan preferensi masyarakat dari menabung ke investasi.', benar:false},
+  {id:'d', teks:'Melonggarkan kebijakan kredit untuk meningkatkan akses pembiayaan bagi sektor rumah tangga dan industri.', benar:false},
+  {id:'e', teks:'Menurunkan rasio cadangan wajib minimum (reserve requirement) agar bank memiliki ruang likuiditas lebih besar untuk menyalurkan kredit dan investasi.', benar:false}
+ ]},
+
+{id:19, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M6, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Pertumbuhan ekonomi Indonesia pada kuartal I-2025 hanya mencapai 4,87%, mengalami penurunan dibanding kuartal-kuartal sebelumnya. Penurunan ini terutama disebabkan oleh lesunya konsumsi rumah tangga, yang hanya tumbuh 4,89% (YOY), meskipun kontribusinya terhadap PDB masih sangat besar, yaitu sekitar 54,53%. Untuk merespons situasi tersebut, Bank Indonesia (BI) mengambil langkah menurunkan rasio Cadangan Wajib Minimum (GWM). Manakah pernyataan berikut yang tepat menggambarkan konsekuensi dan efektivitas dari kebijakan tersebut? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Langkah yang diambil BI dapat memperluas ruang likuiditas perbankan sehingga memperkuat kemampuan pembiayaan terhadap konsumsi rumah tangga.', benar:true},
+  {id:'b', teks:'Kebijakan yang dilakukan BI berisiko gagal meningkatkan konsumsi jika tidak dibarengi dengan perbaikan sisi permintaan seperti kenaikan pendapatan riil masyarakat.', benar:true},
+  {id:'c', teks:'Kebijakan yang dilakukan BI dapat menjadi sinyal ekspansi moneter, namun dampaknya terbatas bila perbankan memilih menahan kredit karena kehati-hatian terhadap risiko gagal bayar.', benar:true},
+  {id:'d', teks:'Langkah BI ini akan secara otomatis meningkatkan konsumsi karena dana murah akan terserap langsung oleh rumah tangga menengah bawah.', benar:false},
+  {id:'e', teks:'Kebijakan yang diambil BI dengan pengawasan alokasi kredit dapat membuat dana justru terserap ke sektor spekulatif seperti aset finansial dan property.', benar:true}
+ ]},
+
+{id:20, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M7, tipe:'pg', kesulitan:'Sulit',
+ teks:'Rokok, minuman beralkohol, dan kendaraan berbahan bakar fosil merupakan barang yang dikategorikan sebagai demerit goods karena dapat membahayakan kesehatan. Oleh karena itu, pemerintah menerapkan kebijakan fungsi regulasi pajak, yakni menaikkan tarif pajak atas produk-produk yang memiliki eksternalitas negatif. Sebagai pelengkap, pemerintah juga memberikan insentif pajak kepada industri yang mengembangkan alternatif ramah lingkungan seperti kendaraan listrik dan produk substitusi non-alkohol.\n\nBerdasarkan ilustrasi tersebut, dampak yang paling tepat dari penerapan fungsi regulasi pajak adalah....',
+ opsi:[
+  {id:'a', teks:'terhambatnya ekspansi industri berbasis energi fosil akibat insentif yang tidak merata'},
+  {id:'b', teks:'perubahan preferensi konsumsi masyarakat menuju barang yang lebih sehat dan ramah lingkungan'},
+  {id:'c', teks:'meningkatnya ketergantungan fiskal terhadap sektor barang dengan dampak eksternalitas tinggi'},
+  {id:'d', teks:'penurunan pendapatan masyarakat akibat meningkatnya harga barang konsumsi umum'},
+  {id:'e', teks:'peningkatan keuntungan produsen barang substitusi sebagai akibat dari kenaikan permintaan'}
+ ], kunci:'b'},
+
+{id:21, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M7, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Pak Andi seorang karyawan swasta. Gaji bulanannya dipotong secara otomatis untuk membayar Pajak Penghasilan (PPh) Pasal 21, yang disetorkan oleh perusahaannya ke kas negara. Ia memiliki Nomor Pokok Wajib Pajak (NPWP) dan rutin melaporkan SPT Tahunan secara online. Sedangkan Ibu Rani seorang pemilik toko kelontong. Ia menjual barang-barang kebutuhan rumah tangga dan secara berkala menyetorkan Pajak Pertambahan Nilai (PPN) atas penjualannya serta membayar PPh Final UMKM. Uang pajak yang disetorkan oleh Pak Andi dan Ibu Rani digunakan untuk membangun fasilitas umum seperti puskesmas dan sekolah, serta membayar gaji pegawai Aparatur Sipil Negara (ASN).\n\nBerdasarkan ilustrasi tersebut, manakah pernyataan berikut yang benar terkait jenis pajak, peran, fungsi, dan prinsip pajak? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Pak Andi membayar pajak langsung, sedangkan Ibu Rani membayar pajak tidak langsung. Keduanya menerapkan prinsip kemudahan dalam pembayaran pajak.', benar:true},
+  {id:'b', teks:'Pajak yang dibayarkan keduanya menunjukkan penerapan fungsi budgeter karena uang pajak digunakan untuk membiayai pengeluaran negara.', benar:true},
+  {id:'c', teks:'Pak Andi membayar pajak tidak langsung dengan prinsip kemudahan, sedangkan Ibu Rani membayar pajak langsung dengan prinsip efisiensi karena rendahnya biaya yang dikeluarkan untuk membayar pajak.', benar:false},
+  {id:'d', teks:'Pajak yang dibayarkan keduanya menunjukkan penerapan fungsi distribusi karena uang yang diterima pemerintah dialokasikan ke berbagai sektor pembangunan dan perluasan lapangan pekerjaan.', benar:true},
+  {id:'e', teks:'Pak Andi dan Ibu Rani membayar pajak langsung dengan prinsip keadilan karena besarnya jumlah pajak yang dibayarkan keduanya sama tanpa memperhatikan objek pajaknya.', benar:false}
+ ]},
+
+{id:22, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M8, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Taliukir adalah sebuah perusahaan yang bergerak di bidang kerajinan tangan berbahan dasar kulit, seperti tas, dompet, dan sabuk. CV. Taliukir sangat mengutamakan kualitas produk yang dibuat secara tradisional, sehingga setiap produk memiliki sentuhan unik dan nilai seni tinggi. Meskipun produknya berkualitas, CV. Taliukir kesulitan mendapatkan modal besar untuk mengembangkan usaha, dan pasokan kulit berkualitas tinggi mulai langka serta harganya terus naik. Solusi yang bisa dilakukan untuk mengatasi permasalahan tersebut yaitu .... (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'menghentikan produksi kerajinan kulit dan beralih ke kerajinan dengan bahan baku lain yang lebih mudah didapat.', benar:false},
+  {id:'b', teks:'membentuk kerjasama dengan peternak sapi atau industri pengolahan kulit mentah untuk memastikan pasokan kulit, dan mencari investor dengan skema bagi hasil.', benar:true},
+  {id:'c', teks:'menimbun kulit berkualitas tinggi dalam jumlah besar saat tersedia, meskipun harganya mahal, dan mengajukan pinjaman bank dengan agunan aset pribadi pemilik CV.', benar:false},
+  {id:'d', teks:'berinvestasi dalam riset dan pengembangan untuk menemukan bahan kulit sintetis berkualitas tinggi yang menyerupai kulit asli.', benar:true},
+  {id:'e', teks:'mengurangi standar kualitas produk agar bisa menggunakan bahan baku kulit dengan kualitas lebih rendah dan biaya produksi lebih murah.', benar:false}
+ ]},
+
+{id:23, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M8, tipe:'pg', kesulitan:'Sulit',
+ teks:'CV Surya Karya, sebuah badan usaha jasa interior, menghadapi masalah keuangan dalam tiga bulan terakhir. Meski pendapatan meningkat karena banyaknya proyek, perusahaan justru mengalami kesulitan membayar gaji karyawan dan tagihan vendor tepat waktu. Setelah dilakukan penelusuran, diketahui bahwa manajer keuangan sering menggunakan dana masuk untuk membayar utang lama tanpa membuat perencanaan arus kas yang jelas. Selain itu, tidak ada pemisahan dana antara proyek satu dengan proyek lainnya.\n\nBerdasarkan uraian tersebut, solusi yang paling tepat untuk mengatasi permasalahan manajemen keuangan yang terjadi adalah...',
+ opsi:[
+  {id:'a', teks:'menambah jumlah staf administrasi keuangan agar pengelolaan dana lebih terdistribusi.'},
+  {id:'b', teks:'mengajukan pinjaman jangka pendek ke bank agar kebutuhan operasional segera terpenuhi.'},
+  {id:'c', teks:'meningkatkan pemasaran agar pemasukan lebih besar dan menutupi kekurangan kas.'},
+  {id:'d', teks:'menyusun sistem pengelolaan arus kas yang terencana dan pemisahan dana untuk setiap proyek.'},
+  {id:'e', teks:'mengurangi proyek yang dikerjakan agar fokus pengelolaan keuangan tidak tersebar.'}
+ ], kunci:'d'},
+
+{id:24, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M8, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data laporan keuangan Koperasi Kilau Gemitang berikut ini.\nJumlah Simpanan anggota Rp80.000.000,00; Jumlah penjualan selama satu tahun Rp250.000.000,00; SHU tahun berjalan Rp200.000.000,00; Jasa usaha 50%; Jasa modal 30%; Jasa pengurus 15%; Dana lain-lain 5%.\n\nBerdasarkan data tersebut, jika jumlah pengurus koperasi sebanyak 20 orang, dan Pak Faiz merupakan salah satu pengurus dengan total simpanan Rp1.000.000,00 serta transaksi penjualan Rp2.000.000,00, maka total SHU yang diterima pak Faiz pada akhir tahun 2025 adalah ....',
+ opsi:[
+  {id:'a', teks:'Rp4.550.000,00'},
+  {id:'b', teks:'Rp3.400.000,00'},
+  {id:'c', teks:'Rp3.230.000,00'},
+  {id:'d', teks:'Rp3.050.000,00'},
+  {id:'e', teks:'Rp3.000.000,00'}
+ ], kunci:'d'},
+
+{id:25, elemen:'Ekonomi Internasional', materi:MATERI.M9, tipe:'pg', kesulitan:'Sulit',
+ teks:'Beberapa negara di Asia Tenggara termasuk Indonesia membentuk sebuah organisasi yang bertujuan mempererat hubungan politik, ekonomi, dan sosial di kawasan mereka. Sementara itu, Indonesia juga menjalin perjanjian perdagangan barang dan jasa dengan Korea Selatan yang hanya melibatkan kedua negara tersebut. Di sisi lain, ada organisasi global yang anggotanya berasal dari berbagai negara di seluruh dunia yang fokus pada masalah perdagangan internasional. Berdasarkan ilustrasi tersebut, apa jenis kerja sama internasional yang tepat?',
+ opsi:[
+  {id:'a', teks:'Kerja sama bilateral untuk ASEAN, kerja sama regional untuk perjanjian Indonesia-Korea, dan kerja sama multilateral untuk organisasi perdagangan global.'},
+  {id:'b', teks:'Kerja sama multilateral untuk ASEAN, kerja sama bilateral untuk perjanjian Indonesia-Korea, dan kerja sama multilateral untuk organisasi perdagangan global.'},
+  {id:'c', teks:'Kerja sama regional untuk ASEAN, kerja sama multilateral untuk perjanjian Indonesia-Korea, dan kerja sama bilateral untuk organisasi perdagangan global.'},
+  {id:'d', teks:'Kerja sama bilateral untuk ASEAN, kerja sama multilateral untuk perjanjian Indonesia-Korea, dan kerja sama regional untuk organisasi perdagangan global.'},
+  {id:'e', teks:'Kerja sama regional untuk ASEAN, kerja sama bilateral untuk perjanjian Indonesia-Korea, dan kerja sama multilateral untuk organisasi perdagangan global.'}
+ ], kunci:'e'},
+
+{id:26, elemen:'Ekonomi Internasional', materi:MATERI.M9, tipe:'pg', kesulitan:'Sulit',
+ teks:'Selama beberapa tahun terakhir, Negara X mengalami defisit neraca perdagangan yang semakin memburuk. Sebagai negara berkembang, negara X bergantung pada ekspor sumber daya alam seperti kelapa sawit, batubara, dan karet. Nilai ekspor negara tersebut stagnan bahkan cenderung mengalami penurunan karena rendahnya kualitas dan inovasi produk domestik. Rendahnya nilai ekspor juga dipengaruhi oleh tingginya biaya logistik sehingga menyebabkan harga produk ekspor menjadi tinggi. Di sisi lain, negara X juga dibanjiri produk impor. Tingginya volume impor barang konsumsi seperti tekstil dan makanan olahan menyebabkan produk lokal kehilangan daya saing.\n\nBerdasarkan ilustrasi tersebut, manakah kebijakan perdagangan internasional yang paling tepat untuk mengatasi permasalahan Negara X?',
+ opsi:[
+  {id:'a', teks:'Meningkatkan kuota impor barang konsumsi agar harga barang di dalam negeri lebih stabil dan tercukupinya kebutuhan masyarakat.'},
+  {id:'b', teks:'Menghapus semua hambatan perdagangan agar negara lebih terbuka terhadap investasi asing, sehingga tercipta lapangan pekerjaan.'},
+  {id:'c', teks:'Memberikan subsidi dan insentif kepada industri lokal serta melakukan diversifikasi produk agar lebih kompetitif di pasar global.'},
+  {id:'d', teks:'Menurunkan nilai tukar mata uang secara drastis untuk mendorong ekspor, sehingga neraca perdagangan kembali surplus.'},
+  {id:'e', teks:'Menurunkan tarif impor agar masyarakat menikmati barang konsumsi impor dengan harga murah sehingga daya beli masyarakat meningkat.'}
+ ], kunci:'c'},
+
+{id:27, elemen:'Ekonomi Internasional', materi:MATERI.M9, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Pada Oktober 2023, American Shrimp Processors Association (ASPA) mengajukan petisi kepada Departemen Perdagangan Amerika Serikat (USDOC) dan Komisi Perdagangan Internasional Amerika Serikat (USITC). Petisi tersebut menuduh bahwa Indonesia melakukan praktik dumping dan menerima subsidi tidak adil dalam ekspor udang tropis beku, yang dianggap merugikan industri udang lokal di Amerika Serikat. Akibat tuduhan ini, ekspor udang Indonesia menghadapi risiko dikenai bea masuk anti-dumping dan countervailing duty (tarif subsidi).\n\nManakah yang merupakan dampak logis terhadap daya saing ekspor udang Indonesia ke Amerika Serikat? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Harga jual udang Indonesia menjadi lebih rendah di pasar Amerika Serikat dibandingkan pesaing seperti India atau Ekuador.', benar:false},
+  {id:'b', teks:'Dapat menurunkan kepercayaan pembeli dan mencoreng reputasi produk perikanan Indonesia di pasar global.', benar:true},
+  {id:'c', teks:'Eksportir Indonesia harus meningkatkan sertifikasi perdagangan untuk menghindari diskriminasi tarif di masa mendatang.', benar:true},
+  {id:'d', teks:'Dapat menjadi peluang bagi Indonesia untuk mendominasi pasar udang beku karena dianggap memiliki harga yang kompetitif.', benar:false},
+  {id:'e', teks:'Dapat memicu negara tujuan lain untuk melakukan penyelidikan serupa terhadap produk ekspor Indonesia.', benar:true}
+ ]},
+
+{id:28, elemen:'Konsep Dasar Akuntansi', materi:MATERI.M10, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Perhatikan beberapa transaksi keuangan berikut yang terjadi di PT Solusi Jasa Mandiri bergerak di perusahaan jasa konsultan teknologi:\n1. Diterima pembayaran tunai sebesar Rp10.000.000,00 dari klien atas jasa yang telah diberikan.\n2. Dibayar sewa kantor untuk 3 bulan ke depan sebesar Rp6.000.000,00 secara tunai.\n3. Membeli peralatan kantor senilai Rp12.000.000,00 secara kredit.\n4. Pemilik menambahkan investasi pribadi ke dalam perusahaan sebesar Rp15.000.000,00 melalui rekening bank perusahaan.\n5. Menerima tagihan listrik bulan ini sebesar Rp800.000,00 yang belum dibayar.\n\nBerdasarkan transaksi tersebut, manakah yang menyebabkan perubahan pada total aset maupun total kewajiban dalam persamaan dasar akuntansi? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Transaksi 1', benar:true},
+  {id:'b', teks:'Transaksi 2', benar:false},
+  {id:'c', teks:'Transaksi 3', benar:true},
+  {id:'d', teks:'Transaksi 4', benar:true},
+  {id:'e', teks:'Transaksi 5', benar:true}
+ ]},
+
+{id:29, elemen:'Konsep Dasar Akuntansi', materi:MATERI.M10, tipe:'pg', kesulitan:'Sulit',
+ teks:'Data keuangan Bengkel Tuan Akhtar periode Desember 2024 sebagai berikut:\nKas Rp10.000.000,00; Piutang Rp7.000.000,00; Sewa dibayar dimuka Rp6.000.000,00; Peralatan Rp8.500.000,00; Utang usaha Rp8.000.000,00; Modal Rp23.500.000,00.\n\nApabila perusahaan membayar utang sebesar Rp2.000.000,00 dan biaya bunga sebesar Rp50.000,00 maka perubahan persamaan dasar akuntansi yang benar adalah ....',
+ opsi:[
+  {id:'a', teks:'harta berkurang menjadi Rp23.450.000,00, utang berkurang menjadi Rp6.000.000,00, dan modal bertambah menjadi Rp29.450.000,00'},
+  {id:'b', teks:'harta berkurang menjadi Rp29.450.000,00, utang berkurang menjadi Rp6.000.000,00, dan modal berkurang menjadi Rp23.450.000,00'},
+  {id:'c', teks:'harta berkurang menjadi Rp29.500.000,00, utang berkurang menjadi Rp6.000.000,00, dan modal tetap sebesar Rp23.500.000,00'},
+  {id:'d', teks:'harta bertambah menjadi Rp31.500.000,00, utang bertambah menjadi Rp8.000.000,00, dan modal tetap sebesar Rp23.500.000,00'},
+  {id:'e', teks:'harta bertambah menjadi Rp33.550.000,00, utang bertambah menjadi Rp10.000.000,00, dan modal bertambah menjadi Rp23.550.000,00'}
+ ], kunci:'b'},
+
+{id:30, elemen:'Konsep Dasar Akuntansi', materi:MATERI.M10, tipe:'pg', kesulitan:'Sulit',
+ teks:'Diketahui data keuangan rental kendaraan "Sat Set" pada bulan Desember 2024 sebagai berikut!\nPendapatan operasional Rp93.000.000,00; Pendapatan non operasional Rp300.000,00; Beban operasional Rp17.950.000,00; Beban non operasional Rp3.050.000,00; Prive Rp2.500.000,00; Modal akhir Rp195.000.000,00.\n\nBerdasarkan data tersebut, besarnya modal awal adalah ....',
+ opsi:[
+  {id:'a', teks:'Rp120.200.000,00'},
+  {id:'b', teks:'Rp122.700.000,00'},
+  {id:'c', teks:'Rp125.200.000,00'},
+  {id:'d', teks:'Rp267.300.000,00'},
+  {id:'e', teks:'Rp269.800.000,00'}
+ ], kunci:'c'},
+
+{id:31, elemen:'Konsep Dasar Ilmu Ekonomi', materi:MATERI.M1, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan tabel Kurva Kemungkinan Produksi (PPF) suatu negara yang memproduksi Pangan dan Manufaktur (dalam ribuan ton):\n\nTitik | Pangan | Manufaktur\nP | 0 | 60\nQ | 10 | 55\nR | 20 | 45\nS | 30 | 30\nT | 40 | 0\n\nJika negara tersebut memindahkan alokasi produksi dari titik Q ke titik R, berapa biaya peluang (opportunity cost) untuk menambah 10 ribu ton Pangan?',
+ opsi:[
+  {id:'a', teks:'5 ribu ton Manufaktur'},
+  {id:'b', teks:'10 ribu ton Manufaktur'},
+  {id:'c', teks:'15 ribu ton Manufaktur'},
+  {id:'d', teks:'20 ribu ton Manufaktur'},
+  {id:'e', teks:'25 ribu ton Manufaktur'}
+ ], kunci:'b'},
+
+{id:32, elemen:'Konsep Dasar Ilmu Ekonomi', materi:MATERI.M1, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Sebuah koperasi kerajinan memiliki 20 pengrajin dan pasokan bahan baku rotan 500 kg/bulan. Berikut kebutuhan sumber daya per unit produk:\n\nProduk | Rotan per unit (kg) | Jam kerja per unit\nKeranjang | 2 | 3\nKursi | 5 | 8\nRak | 3 | 5\n\nPermintaan pasar bulan ini: Keranjang 150 unit, Kursi 60 unit, Rak 80 unit. Total jam kerja tersedia = 20 pengrajin × 25 hari × 8 jam = 4.000 jam/bulan.\n\nManakah pernyataan berikut yang tepat menggambarkan kelangkaan sumber daya pada koperasi tersebut? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Bahan baku rotan menjadi faktor pembatas utama karena total kebutuhan (840 kg) melebihi ketersediaan (500 kg).', benar:true},
+  {id:'b', teks:'Jam kerja pengrajin adalah kendala utama karena seluruh 4.000 jam habis terpakai untuk memenuhi permintaan.', benar:false},
+  {id:'c', teks:'Koperasi perlu memprioritaskan alokasi rotan pada produk dengan nilai tambah tertinggi karena rotan bersifat langka sedangkan jam kerja masih tersedia.', benar:true},
+  {id:'d', teks:'Karena jam kerja mencukupi, seluruh permintaan pasar otomatis dapat dipenuhi tanpa kendala apa pun.', benar:false},
+  {id:'e', teks:'Kelangkaan rotan dapat diatasi dengan mencari pemasok tambahan atau menyesuaikan jumlah produksi sesuai skala prioritas.', benar:true}
+ ]},
+
+{id:33, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M2, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan tabel permintaan dan penawaran suatu barang berikut:\n\nHarga (Rp/unit) | Qd (unit) | Qs (unit)\n2.000 | 500 | 100\n4.000 | 400 | 200\n6.000 | 300 | 300\n8.000 | 200 | 400\n10.000 | 100 | 500\n\nBerdasarkan tabel tersebut, pada tingkat harga berapa pasar mengalami kelebihan penawaran (excess supply) sebesar 200 unit?',
+ opsi:[
+  {id:'a', teks:'Rp2.000'},
+  {id:'b', teks:'Rp4.000'},
+  {id:'c', teks:'Rp6.000'},
+  {id:'d', teks:'Rp8.000'},
+  {id:'e', teks:'Rp10.000'}
+ ], kunci:'d'},
+
+{id:34, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M2, tipe:'pg', kesulitan:'Sulit',
+ teks:'Saat harga bakso naik dari Rp10.000,00 menjadi Rp12.000,00 per porsi, jumlah porsi terjual turun dari 200 porsi menjadi 150 porsi per hari.\n\nBerapa nilai koefisien elastisitas permintaan (Ed) bakso tersebut, dan apa sifat permintaannya?',
+ opsi:[
+  {id:'a', teks:'Ed = -0,8 (inelastis)'},
+  {id:'b', teks:'Ed = -1,0 (elastis uniter)'},
+  {id:'c', teks:'Ed = -1,25 (elastis)'},
+  {id:'d', teks:'Ed = -1,5 (elastis)'},
+  {id:'e', teks:'Ed = -2,0 (elastis)'}
+ ], kunci:'c'},
+
+{id:35, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M2, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan tabel efek beberapa peristiwa terhadap pasar telur ayam berikut:\n\nPeristiwa | Kurva yang Bergeser | Arah Pergeseran\nWabah flu burung (produksi turun) | Penawaran | Kiri\nMenjelang Lebaran (permintaan naik) | Permintaan | Kanan\nHarga pakan ternak naik | Penawaran | Kiri\nKampanye hidup sehat (konsumsi telur naik) | Permintaan | Kanan\n\nJika wabah flu burung dan menjelang Lebaran terjadi bersamaan, dampak paling pasti terhadap keseimbangan pasar telur ayam adalah ....',
+ opsi:[
+  {id:'a', teks:'harga pasti naik, jumlah pasti naik'},
+  {id:'b', teks:'harga pasti naik, jumlah belum tentu naik atau turun'},
+  {id:'c', teks:'harga pasti turun, jumlah pasti turun'},
+  {id:'d', teks:'harga dan jumlah keduanya tidak berubah'},
+  {id:'e', teks:'harga belum tentu naik atau turun, jumlah pasti turun'}
+ ], kunci:'b'},
+
+{id:36, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M3, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data kontribusi sektor terhadap PDB berikut:\n\nSektor | Kontribusi PDB 2023 (%) | Kontribusi PDB 2024 (%)\nPertanian | 12,5 | 12,0\nIndustri | 19,8 | 20,1\nJasa | 44,3 | 45,0\nLainnya | 23,4 | 22,9\n\nBerdasarkan data tersebut, kesimpulan yang tepat mengenai transformasi struktur ekonomi adalah ....',
+ opsi:[
+  {id:'a', teks:'Struktur ekonomi bergeser ke sektor pertanian karena kontribusinya paling stabil.'},
+  {id:'b', teks:'Terjadi transformasi struktural menuju sektor industri dan jasa, sementara peran sektor pertanian menurun.'},
+  {id:'c', teks:'Perekonomian semakin bergantung pada sektor lainnya karena kontribusinya tetap paling besar setelah jasa.'},
+  {id:'d', teks:'Tidak terjadi perubahan berarti karena seluruh sektor tumbuh secara proporsional.'},
+  {id:'e', teks:'Sektor jasa mengalami penurunan kontribusi sehingga perekonomian kembali ke basis agraris.'}
+ ], kunci:'b'},
+
+{id:37, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M3, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data PDB riil suatu negara (dalam Rp triliun) tahun 2021-2025:\n\n2021: 1.000\n2022: 1.060\n2023: 1.113\n2024: 1.157\n2025: 1.215\n\nBerdasarkan data tersebut, pada tahun berapa laju pertumbuhan ekonomi (dibanding tahun sebelumnya) mengalami peningkatan tertinggi?',
+ opsi:[
+  {id:'a', teks:'2022'},
+  {id:'b', teks:'2023'},
+  {id:'c', teks:'2024'},
+  {id:'d', teks:'2025'},
+  {id:'e', teks:'Seluruh tahun memiliki laju pertumbuhan yang sama'}
+ ], kunci:'a'},
+
+{id:38, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M4, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data ketenagakerjaan berdasarkan tingkat pendidikan berikut:\n\nTingkat Pendidikan | Angkatan Kerja (juta) | Jumlah Menganggur (juta)\nSD ke bawah | 40 | 1,0\nSMP | 25 | 1,2\nSMA/SMK | 35 | 3,5\nDiploma/S1 | 20 | 1,0\n\nBerdasarkan data tersebut, kelompok pendidikan manakah yang memiliki Tingkat Pengangguran Terbuka (TPT) tertinggi, dan apa implikasi kebijakannya?',
+ opsi:[
+  {id:'a', teks:'SD ke bawah, karena jumlah penganggurnya paling sedikit sehingga perlu pelatihan dasar.'},
+  {id:'b', teks:'SMP, karena TPT-nya di atas rata-rata nasional sehingga perlu pendidikan lanjutan gratis.'},
+  {id:'c', teks:'SMA/SMK, karena TPT-nya tertinggi (10%) sehingga diperlukan penguatan keterkaitan dengan dunia industri dan pelatihan vokasi.'},
+  {id:'d', teks:'Diploma/S1, karena jumlah angkatan kerjanya paling kecil sehingga tidak perlu kebijakan tambahan.'},
+  {id:'e', teks:'Seluruh kelompok memiliki TPT yang sama sehingga tidak diperlukan kebijakan berbeda.'}
+ ], kunci:'c'},
+
+{id:39, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M4, tipe:'kategori', kesulitan:'Sulit',
+ teks:'Perhatikan data aktivitas mingguan beberapa penduduk usia kerja berikut:\n\nNama | Aktivitas Minggu Ini\nBudi | Bekerja sebagai buruh tani selama 3 hari (18 jam)\nSinta | Mengikuti kuliah penuh waktu, tidak bekerja, dan tidak mencari kerja\nRudi | Sudah 2 bulan mencari kerja setelah mengalami PHK\nAni | Membantu usaha warung milik orang tua tanpa dibayar, 20 jam/minggu\n\nTentukan Benar atau Salah pernyataan berikut sesuai konsep ketenagakerjaan (BPS):',
+ pernyataan:[
+  {teks:'Budi termasuk bekerja karena telah bekerja lebih dari 1 jam dalam seminggu untuk memperoleh penghasilan.', benar:true},
+  {teks:'Sinta termasuk bukan angkatan kerja karena sedang bersekolah penuh waktu dan tidak mencari kerja.', benar:true},
+  {teks:'Ani tidak termasuk bekerja karena tidak menerima upah dari kegiatannya membantu di warung keluarga.', benar:false}
+ ]},
+
+{id:40, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M5, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data harga dan bobot konsumsi beberapa komoditas berikut:\n\nBarang | Bobot Konsumsi | Harga 2024 | Harga 2025\nBeras | 40% | Rp12.000 | Rp13.200\nMinyak goreng | 25% | Rp16.000 | Rp17.600\nGula | 20% | Rp14.000 | Rp15.400\nTelur | 15% | Rp26.000 | Rp29.900\n\nKomoditas manakah yang memberikan kontribusi terbesar terhadap laju inflasi, mengingat bobot konsumsinya?',
+ opsi:[
+  {id:'a', teks:'Telur, karena memiliki laju kenaikan harga individual tertinggi (15%).'},
+  {id:'b', teks:'Beras, karena meskipun laju kenaikannya sama dengan minyak goreng dan gula (10%), bobot konsumsinya paling besar sehingga kontribusinya terhadap inflasi paling tinggi.'},
+  {id:'c', teks:'Minyak goreng, karena harga per unitnya mengalami kenaikan nominal terbesar.'},
+  {id:'d', teks:'Gula, karena memiliki bobot menengah dan kenaikan harga yang stabil.'},
+  {id:'e', teks:'Seluruh komoditas memberikan kontribusi yang sama terhadap inflasi karena laju kenaikannya seragam.'}
+ ], kunci:'b'},
+
+{id:41, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M5, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data Indeks Harga Konsumen (IHK) bulanan berikut:\n\nJanuari: 118,0\nFebruari: 118,5\nMaret: 119,2\nApril: 118,9\nMei: 119,5\nJuni: 120,1\n\nBerdasarkan data tersebut, pada bulan apa terjadi deflasi (penurunan indeks harga dibanding bulan sebelumnya)?',
+ opsi:[
+  {id:'a', teks:'Februari'},
+  {id:'b', teks:'Maret'},
+  {id:'c', teks:'April'},
+  {id:'d', teks:'Mei'},
+  {id:'e', teks:'Juni'}
+ ], kunci:'c'},
+
+{id:42, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M6, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data indikator moneter berikut:\n\nBulan | Inflasi (%) | BI Rate | Uang Beredar M2 (Rp triliun)\nJanuari | 2,8 | 5,75% | 8.900\nFebruari | 3,4 | 5,75% | 9.050\nMaret | 4,2 | 6,00% | 9.100\nApril | 4,9 | 6,25% | 9.080\n\nBerdasarkan tren data tersebut, langkah yang paling konsisten dilakukan Bank Indonesia dalam merespons kenaikan inflasi adalah ....',
+ opsi:[
+  {id:'a', teks:'Menurunkan BI Rate secara bertahap untuk mendorong konsumsi masyarakat.'},
+  {id:'b', teks:'Menaikkan BI Rate secara bertahap dan menahan laju pertumbuhan uang beredar guna meredam tekanan inflasi.'},
+  {id:'c', teks:'Menambah jumlah uang beredar secara agresif untuk mendorong investasi meskipun inflasi meningkat.'},
+  {id:'d', teks:'Membiarkan inflasi dan suku bunga bergerak tanpa intervensi kebijakan moneter.'},
+  {id:'e', teks:'Menurunkan cadangan wajib minimum agar bank memiliki likuiditas lebih besar untuk disalurkan.'}
+ ], kunci:'b'},
+
+{id:43, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M7, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data APBN berikut (dalam Rp triliun):\n\nTahun | Pendapatan Negara | Belanja Negara\n2023 | 2.600 | 3.000\n2024 | 2.750 | 3.200\n2025 | 2.900 | 3.450\n\nBerdasarkan data tersebut, kebijakan fiskal yang diterapkan pemerintah selama periode tersebut adalah ....',
+ opsi:[
+  {id:'a', teks:'Kebijakan fiskal kontraktif karena belanja negara terus dikurangi setiap tahun.'},
+  {id:'b', teks:'Kebijakan fiskal ekspansif dengan defisit anggaran yang cenderung melebar setiap tahun.'},
+  {id:'c', teks:'Kebijakan fiskal seimbang karena pendapatan dan belanja tumbuh dengan proporsi yang sama.'},
+  {id:'d', teks:'Kebijakan fiskal surplus karena pendapatan negara terus meningkat.'},
+  {id:'e', teks:'Tidak dapat disimpulkan karena data belanja dan pendapatan tidak berkaitan dengan kebijakan fiskal.'}
+ ], kunci:'b'},
+
+{id:44, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M7, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Perhatikan tarif Pajak Penghasilan (PPh) Pasal 21 progresif berikut:\n\nLapisan Penghasilan Kena Pajak (PKP) | Tarif\nSampai Rp60.000.000 | 5%\n>Rp60.000.000 s.d. Rp250.000.000 | 15%\n>Rp250.000.000 s.d. Rp500.000.000 | 25%\n>Rp500.000.000 | 30%\n\nPak Broto memiliki PKP setahun sebesar Rp300.000.000,00. Manakah pernyataan berikut yang benar? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Total pajak terutang Pak Broto adalah Rp44.000.000,00.', benar:true},
+  {id:'b', teks:'Seluruh penghasilan Pak Broto dikenakan tarif tunggal 25% karena PKP-nya berada pada lapisan tersebut.', benar:false},
+  {id:'c', teks:'Tarif pajak yang dikenakan bersifat progresif, artinya semakin tinggi penghasilan pada suatu lapisan maka semakin tinggi persentase tarifnya.', benar:true},
+  {id:'d', teks:'Jika PKP Pak Broto turun menjadi Rp55.000.000,00, seluruh penghasilannya hanya dikenakan tarif 5%.', benar:true},
+  {id:'e', teks:'Sistem pajak progresif ini mencerminkan prinsip kesamaan karena setiap wajib pajak membayar nominal pajak yang sama.', benar:false}
+ ]},
+
+{id:45, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M8, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan matriks ciri tiga badan usaha berikut:\n\nBadan Usaha | Kepemilikan Modal | Tujuan Utama\nX | Sebagian besar negara, sebagian dijual ke publik lewat bursa | Melayani publik & mencari laba\nY | Pemerintah daerah | Melayani kebutuhan daerah & menyumbang PAD\nZ | Iuran/simpanan anggota (dari, oleh, untuk anggota) | Kesejahteraan anggota\n\nBerdasarkan matriks tersebut, badan usaha X, Y, dan Z secara berurutan adalah ....',
+ opsi:[
+  {id:'a', teks:'BUMN Persero, BUMD, Koperasi'},
+  {id:'b', teks:'BUMD, BUMN Persero, Koperasi'},
+  {id:'c', teks:'Koperasi, BUMN Persero, BUMD'},
+  {id:'d', teks:'BUMN Perum, BUMD, BUMS'},
+  {id:'e', teks:'BUMS, BUMN Persero, Koperasi'}
+ ], kunci:'a'},
+
+{id:46, elemen:'Ekonomi Mikro dan Makro', materi:MATERI.M8, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data Koperasi Sejahtera Bersama tahun 2025 berikut:\n\nSHU tahun berjalan Rp150.000.000,00; Jasa modal 25%; Jasa usaha 45%; Dana pengurus 10%; Dana pendidikan 10%; Dana sosial 10%.\nTotal simpanan seluruh anggota Rp120.000.000,00. Total transaksi/pembelian anggota setahun Rp300.000.000,00.\n\nBu Wati memiliki simpanan Rp3.000.000,00 dan total transaksi Rp9.000.000,00 selama tahun 2025. Berapa total SHU yang diterima Bu Wati?',
+ opsi:[
+  {id:'a', teks:'Rp2.962.500,00'},
+  {id:'b', teks:'Rp3.150.000,00'},
+  {id:'c', teks:'Rp2.500.000,00'},
+  {id:'d', teks:'Rp3.375.000,00'},
+  {id:'e', teks:'Rp2.775.000,00'}
+ ], kunci:'a'},
+
+{id:47, elemen:'Ekonomi Internasional', materi:MATERI.M9, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data neraca perdagangan Indonesia dengan beberapa mitra tahun 2025 (dalam USD miliar):\n\nNegara | Ekspor Indonesia | Impor Indonesia\nTiongkok | 65 | 80\nAmerika Serikat | 30 | 12\nIndia | 22 | 8\nJepang | 18 | 20\n\nBerdasarkan data tersebut, terhadap negara manakah Indonesia mengalami defisit neraca perdagangan bilateral terbesar, dan apa implikasinya?',
+ opsi:[
+  {id:'a', teks:'Amerika Serikat, karena nilai ekspornya paling tinggi sehingga berisiko defisit.'},
+  {id:'b', teks:'Tiongkok, karena nilai impor Indonesia dari Tiongkok jauh melebihi ekspornya, sehingga perlu strategi substitusi impor dan penguatan daya saing produk domestik.'},
+  {id:'c', teks:'India, karena nilai ekspor dan impornya paling kecil di antara mitra dagang lainnya.'},
+  {id:'d', teks:'Jepang, karena mengalami defisit terbesar akibat impor mesin dan elektronik.'},
+  {id:'e', teks:'Tidak ada negara yang menyebabkan defisit karena total ekspor Indonesia lebih tinggi dari total impor.'}
+ ], kunci:'b'},
+
+{id:48, elemen:'Ekonomi Internasional', materi:MATERI.M9, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data pergerakan nilai tukar Rupiah dan volume perdagangan berikut:\n\nBulan | Kurs (Rp/USD) | Ekspor (USD juta) | Impor (USD juta)\nJanuari | 15.500 | 1.200 | 1.100\nFebruari | 15.800 | 1.250 | 1.080\nMaret | 16.200 | 1.320 | 1.020\n\nBerdasarkan tren data tersebut, kesimpulan yang tepat terkait dampak pelemahan Rupiah terhadap kinerja perdagangan luar negeri adalah ....',
+ opsi:[
+  {id:'a', teks:'Pelemahan Rupiah mendorong kenaikan ekspor dan penurunan impor, sehingga berpotensi memperbaiki neraca perdagangan.'},
+  {id:'b', teks:'Pelemahan Rupiah menyebabkan ekspor dan impor sama-sama menurun karena daya beli masyarakat melemah.'},
+  {id:'c', teks:'Pelemahan Rupiah tidak berpengaruh terhadap ekspor maupun impor karena keduanya ditentukan oleh faktor domestik semata.'},
+  {id:'d', teks:'Pelemahan Rupiah menyebabkan impor meningkat karena barang luar negeri menjadi lebih murah bagi konsumen domestik.'},
+  {id:'e', teks:'Pelemahan Rupiah menurunkan daya saing ekspor Indonesia di pasar global.'}
+ ], kunci:'a'},
+
+{id:49, elemen:'Konsep Dasar Akuntansi', materi:MATERI.M10, tipe:'mcma', kesulitan:'Sulit',
+ teks:'Perhatikan sebagian Neraca Saldo PT Cahaya Abadi per 31 Desember 2025 berikut:\n\nAkun | Debit | Kredit\nKas | Rp15.000.000 | -\nUtang Usaha | Rp8.000.000 | -\nPeralatan | - | Rp20.000.000\nModal | - | Rp25.000.000\nPendapatan Jasa | Rp12.000.000 | -\nBeban Gaji | - | Rp6.000.000\n\nManakah akun berikut yang penempatan saldo normalnya TIDAK TEPAT pada neraca saldo tersebut? (Jawaban benar lebih dari satu)',
+ opsi:[
+  {id:'a', teks:'Kas', benar:false},
+  {id:'b', teks:'Utang Usaha', benar:true},
+  {id:'c', teks:'Peralatan', benar:true},
+  {id:'d', teks:'Modal', benar:false},
+  {id:'e', teks:'Pendapatan Jasa', benar:true}
+ ]},
+
+{id:50, elemen:'Konsep Dasar Akuntansi', materi:MATERI.M10, tipe:'pg', kesulitan:'Sulit',
+ teks:'Perhatikan data keuangan Salon Cantika bulan Maret 2025 berikut:\n\nModal awal Rp50.000.000,00; Pendapatan jasa Rp18.000.000,00; Pendapatan lain-lain Rp1.500.000,00; Beban sewa Rp3.000.000,00; Beban gaji Rp5.500.000,00; Beban listrik & air Rp800.000,00; Prive pemilik Rp2.200.000,00.\n\nBerdasarkan data tersebut, besarnya modal akhir Salon Cantika pada akhir Maret 2025 adalah ....',
+ opsi:[
+  {id:'a', teks:'Rp56.000.000,00'},
+  {id:'b', teks:'Rp58.000.000,00'},
+  {id:'c', teks:'Rp60.200.000,00'},
+  {id:'d', teks:'Rp52.200.000,00'},
+  {id:'e', teks:'Rp61.500.000,00'}
+ ], kunci:'b'}
+];
+
+const PEMBAHASAN = {
+1:'Alih fungsi lahan terjadi karena pembangunan gedung/perumahan meningkat sementara ketersediaan tanah terbatas (kelangkaan lahan). Solusi yang tepat adalah menetapkan zona perlindungan lahan pertanian agar konversi lahan dapat dikendalikan tanpa menghentikan pembangunan secara total.',
+2:'Biaya peluang adalah nilai dari alternatif terbaik yang dikorbankan. Karena Safia memilih usaha kuliner, dua pilihan lain yang ditinggalkan adalah bekerja (Rp10.000.000) dan S2 (Rp2.000.000). Alternatif terbaik yang dikorbankan adalah bekerja dengan gaji Rp10.000.000,00.',
+3:'Prinsip ekonomi menuntut hasil optimal dengan tetap menjaga kualitas dan kepercayaan konsumen. Mencari bahan baku alami dari daerah lain dengan harga lebih kompetitif menjaga kualitas produk sekaligus menekan biaya, tanpa mengorbankan reputasi merek.',
+4:'Kenaikan UMP menaikkan biaya produksi sehingga kurva penawaran bergeser ke kiri. Dengan permintaan tetap, pergeseran penawaran ke kiri menghasilkan harga keseimbangan naik dan jumlah barang yang diperjualbelikan turun.',
+5:'Substitusikan harga baru (harga lama + Rp3.000) ke tiap fungsi penawaran: Tepung Qs=-1250+0,25(18.000)=3.250kg; Telur Qs=500+0,04(33.000)=1.820kg; Gula Qs=-1200+0,3(23.000)=5.700kg.',
+6:'Keseimbangan sebelum pajak: Qd=Qs → -20P+500=5P+100 → P=16, Q=180. Setelah pajak Rp25/unit, fungsi penawaran baru Qs=5(P-25)+100=5P-25, sehingga -20P+500=5P-25 → P=21, Q=80. Harga naik Rp5 (dari 16 ke 21) dan kuantitas turun 100 unit (dari 180 ke 80).',
+7:'Sepeda motor dan BBM adalah barang komplementer. Ketika harga BBM naik, permintaan terhadap sepeda motor menurun sehingga kurva permintaan bergerak/bergeser ke bawah dari D1 menuju D3 pada harga yang sama (P1).',
+8:'GNP = PDB + produk neto luar negeri = 1.280.000; NNP = GNP - penyusutan = 1.265.000; NNI = NNP - pajak tidak langsung = 1.255.000; PI = NNI - (laba ditahan+iuran asuransi+pajak perseroan) + transfer payment = 1.220.000; DI = PI - pajak langsung = Rp1.190.000 miliar.',
+9:'Pertumbuhan ekonomi didorong oleh faktor produktif seperti inovasi/teknologi, kualitas SDM (pendidikan), akses pembiayaan (kredit usaha), dan stabilitas harga yang mendukung iklim investasi. Bantuan sosial bersifat redistributif untuk kesejahteraan, bukan pendorong utama pertumbuhan produksi.',
+10:'Pernyataan 1 benar: gini naik dari 0,384 (2021) ke 0,388 (2023) seiring pertumbuhan meningkat, menandakan ketimpangan sedikit meningkat. Pernyataan 2 benar: gini turun ke 0,379 di 2024 saat pertumbuhan stabil, mengindikasikan distribusi lebih merata. Pernyataan 3 salah karena bersifat mutlak ("selalu"), padahal pada 2021 pertumbuhan naik namun gini juga naik (0,381→0,384), sehingga pola tersebut tidak selalu berlaku.',
+11:'IPM 0,700–0,799 tergolong kategori tinggi, sehingga pernyataan (a) benar untuk kedua negara. Pertumbuhan Vietnam (7,09%) justru lebih tinggi dari Indonesia (5,03%), sehingga (b) salah. IPM Vietnam (0,766) lebih tinggi dari Indonesia (0,750) sehingga kesejahteraan Vietnam relatif lebih tinggi, membuat (c) salah dan (d) benar. Pertumbuhan positif kedua negara mencerminkan kapasitas produksi yang terus berkembang, sehingga (e) benar.',
+12:'Mely (fresh graduate mencari kerja pertama) dan Bagas (menolak tawaran karena upah belum sesuai) tergolong pengangguran friksional (bersifat sementara/transisi). Yoga tidak lolos kualifikasi tergolong pengangguran struktural, Pratiwi mengundurkan diri karena pindah kota tergolong friksional, dan Andi terkena PHK akibat lesunya permintaan tergolong pengangguran siklis. Karena itu pernyataan 1 dan 3 salah, pernyataan 2 benar.',
+13:'Akar masalah adalah ketidaksesuaian (mismatch) antara keterampilan lulusan muda dan kebutuhan dunia kerja, sehingga solusi paling tepat adalah menyediakan pelatihan keterampilan kewirausahaan yang terintegrasi dengan sistem pendidikan agar lulusan lebih siap kerja atau mandiri berwirausaha.',
+14:'Kenaikan harga terjadi karena permintaan masyarakat meningkat pesat menjelang Ramadan sementara pasokan justru menurun akibat gagal panen — inti masalahnya adalah permintaan yang tumbuh lebih cepat daripada pasokan (demand-pull inflation).',
+15:'Metode agregatif sederhana: IHK = (jumlah harga tahun berjalan ÷ jumlah harga tahun dasar) × 100 = (45.000+26.000+25.000+19.000)/(40.000+24.000+22.000+14.000) × 100 = 115.000/100.000 × 100 = 115%.',
+16:'Kenaikan IHK 2022–2025: Pariwisata 17% (100→117), Transportasi 16% (100→116), Kesehatan 18% (100→118). Sektor kesehatan mengalami kenaikan indeks harga tertinggi sehingga paling berdampak terhadap inflasi.',
+17:'Fungsi Bank Indonesia sebagai bank sentral meliputi mengatur suku bunga acuan, mengawasi sistem pembayaran, dan menjaga stabilitas sistem keuangan. Menghimpun dana masyarakat (giro/tabungan/deposito) dan menyalurkan kredit langsung ke usaha kecil adalah tugas bank umum, bukan bank sentral.',
+18:'Lonjakan konsumsi saat Lebaran memicu inflasi, sehingga diperlukan kebijakan moneter kontraktif untuk mengurangi jumlah uang beredar: menaikkan suku bunga simpanan (mendorong menabung) dan menjual surat berharga/OPT (menarik uang dari peredaran). Menurunkan suku bunga, melonggarkan kredit, atau menurunkan GWM justru bersifat ekspansif dan memperparah inflasi.',
+19:'Penurunan GWM menambah likuiditas bank (a benar), tetapi efektivitasnya tergantung sisi permintaan seperti kenaikan pendapatan riil (b benar) dan kehati-hatian bank dalam menyalurkan kredit (c benar). Klaim bahwa dana "secara otomatis" terserap rumah tangga menengah bawah (d) terlalu pasti dan tidak realistis. Tanpa pengawasan alokasi yang baik, dana longgar berisiko mengalir ke aset spekulatif (e benar).',
+20:'Menaikkan pajak barang berdampak negatif (demerit goods) sambil memberi insentif pada alternatif ramah lingkungan mendorong masyarakat mengalihkan pilihan konsumsi ke barang yang lebih sehat dan ramah lingkungan — inilah fungsi regulasi (mengatur perilaku) dari pajak.',
+21:'PPh 21 Pak Andi adalah pajak langsung (beban tidak bisa dialihkan) yang dipungut otomatis (prinsip kemudahan); PPN pada penjualan Ibu Rani adalah pajak tidak langsung. Uang pajak keduanya membiayai pengeluaran negara (fungsi budgeter) sekaligus dialokasikan untuk pembangunan dan lapangan kerja (fungsi distribusi). Pernyataan yang menyebut PPh 21 sebagai pajak tidak langsung, atau menyamakan nominal pajak keduanya, keliru.',
+22:'Masalah utama CV Taliukir adalah keterbatasan modal dan langkanya bahan baku kulit berkualitas. Solusi yang tepat adalah menjalin kerja sama pasokan kulit dengan peternak/industri pengolahan sekaligus mencari investor bagi hasil, serta riset bahan kulit sintetis berkualitas tinggi sebagai alternatif jangka panjang. Menghentikan produksi, menimbun bahan dengan agunan pribadi, atau menurunkan kualitas produk berisiko merusak nilai jual dan reputasi usaha.',
+23:'Akar masalah CV Surya Karya adalah tidak adanya perencanaan arus kas dan pencampuran dana antarproyek. Solusi yang menyasar akar masalah adalah menyusun sistem pengelolaan arus kas yang terencana serta memisahkan dana tiap proyek, bukan sekadar menambah pemasukan atau berutang lagi.',
+24:'SHU jasa usaha Pak Faiz = (2.000.000/250.000.000) × 50% × 200.000.000 = Rp800.000. SHU jasa modal = (1.000.000/80.000.000) × 30% × 200.000.000 = Rp750.000. SHU jasa pengurus = 15% × 200.000.000 ÷ 20 pengurus = Rp1.500.000. Total = 800.000+750.000+1.500.000 = Rp3.050.000,00.',
+25:'ASEAN melibatkan beberapa negara dalam satu kawasan → kerja sama regional. Perjanjian Indonesia-Korea Selatan hanya melibatkan dua negara → kerja sama bilateral. Organisasi perdagangan dengan anggota dari seluruh dunia → kerja sama multilateral.',
+26:'Masalah Negara X adalah rendahnya kualitas/inovasi ekspor, tingginya biaya logistik, dan membanjirnya barang impor. Solusi yang menyasar akar masalah adalah memberi subsidi/insentif pada industri lokal serta melakukan diversifikasi produk agar lebih kompetitif di pasar global — bukan sekadar menambah kuota impor, melepas semua hambatan, atau mendevaluasi mata uang secara drastis.',
+27:'Tuduhan dumping dan ancaman bea masuk tambahan berisiko mencoreng reputasi produk perikanan Indonesia (b) dan mendorong eksportir memperkuat sertifikasi agar terhindar dari diskriminasi tarif serupa di masa depan (c), serta berpotensi memicu negara lain melakukan penyelidikan serupa (e). Tarif tambahan membuat harga udang Indonesia menjadi kurang kompetitif (bukan lebih rendah), sehingga (a) dan (d) tidak logis.',
+28:'Transaksi 1 menambah kas dan modal (total aset naik). Transaksi 2 hanya memindahkan nilai antar-akun aset (kas ke sewa dibayar dimuka) sehingga total aset tidak berubah dan kewajiban tidak tersentuh. Transaksi 3 menambah aset (peralatan) dan kewajiban (utang) sekaligus. Transaksi 4 menambah aset (kas) dan modal. Transaksi 5 menambah kewajiban (utang listrik). Jadi transaksi yang mengubah total aset atau kewajiban adalah 1, 3, 4, dan 5.',
+29:'Kas berkurang Rp2.050.000 (bayar utang Rp2.000.000 + bunga Rp50.000) menjadi Rp7.950.000, sehingga total harta menjadi Rp29.450.000. Utang berkurang Rp2.000.000 menjadi Rp6.000.000. Beban bunga Rp50.000 mengurangi modal menjadi Rp23.450.000.',
+30:'Laba bersih = (93.000.000+300.000) - (17.950.000+3.050.000) = Rp72.300.000. Modal akhir = Modal awal + Laba bersih - Prive → 195.000.000 = Modal awal + 72.300.000 - 2.500.000 → Modal awal = Rp125.200.000,00.',
+31:'Dari Q ke R, Pangan naik 10 (dari 10 ke 20) sedangkan Manufaktur turun dari 55 ke 45 (turun 10). Jadi biaya peluang menambah 10 ribu ton Pangan adalah 10 ribu ton Manufaktur yang dikorbankan.',
+32:'Total kebutuhan rotan = (150×2)+(60×5)+(80×3) = 300+300+240 = 840 kg, melebihi pasokan 500 kg, sehingga rotan menjadi faktor pembatas (a benar). Total kebutuhan jam kerja = (150×3)+(60×8)+(80×5) = 450+480+400 = 1.330 jam, jauh di bawah kapasitas 4.000 jam, sehingga jam kerja bukan kendala (b salah, d salah). Karena rotan langka, alokasinya perlu diprioritaskan pada produk bernilai tambah tinggi (c benar), dan solusi jangka panjangnya adalah menambah pemasok atau menyesuaikan skala produksi (e benar).',
+33:'Excess supply = Qs − Qd. Pada harga Rp8.000, Qs=400 dan Qd=200, sehingga excess supply = 400−200 = 200 unit, sesuai yang ditanyakan.',
+34:'%ΔQ = (150−200)/200 = −25%. %ΔP = (12.000−10.000)/10.000 = 20%. Ed = −25%/20% = −1,25. Karena │Ed│>1, permintaan bersifat elastis.',
+35:'Wabah flu burung menggeser kurva penawaran ke kiri (harga naik, kuantitas turun) sedangkan momen Lebaran menggeser kurva permintaan ke kanan (harga naik, kuantitas naik). Karena kedua peristiwa sama-sama mendorong harga naik, harga pasti naik. Namun efek terhadap kuantitas saling berlawanan sehingga hasil akhirnya tergantung besar pergeseran masing-masing kurva (belum tentu naik atau turun).',
+36:'Kontribusi Industri naik (19,8%→20,1%) dan Jasa naik (44,3%→45,0%), sementara Pertanian turun (12,5%→12,0%) dan Lainnya turun (23,4%→22,9%). Pola ini menunjukkan transformasi struktural menuju sektor industri dan jasa, sejalan dengan menurunnya peran sektor pertanian.',
+37:'Laju pertumbuhan tiap tahun: 2022=(1.060−1.000)/1.000=6%; 2023=(1.113−1.060)/1.060=5%; 2024=(1.157−1.113)/1.113≈4%; 2025=(1.215−1.157)/1.157≈5%. Pertumbuhan tertinggi terjadi pada tahun 2022 sebesar 6%.',
+38:'TPT = jumlah menganggur ÷ angkatan kerja × 100%. SD: 1,0/40=2,5%; SMP: 1,2/25=4,8%; SMA/SMK: 3,5/35=10%; Diploma/S1: 1,0/20=5%. TPT tertinggi ada pada lulusan SMA/SMK, mengindikasikan ketidaksesuaian keterampilan dengan kebutuhan industri sehingga perlu penguatan pendidikan vokasi.',
+39:'Budi bekerja 18 jam (>1 jam/minggu) untuk memperoleh penghasilan, sehingga tergolong bekerja. Sinta bersekolah penuh waktu dan tidak mencari kerja, sehingga tergolong bukan angkatan kerja. Ani tetap tergolong bekerja meskipun tidak dibayar, karena menurut konsep ketenagakerjaan BPS, pekerja keluarga tanpa upah (unpaid family worker) tetap dihitung sebagai bekerja — sehingga pernyataan bahwa Ani "tidak termasuk bekerja" adalah salah.',
+40:'Persentase kenaikan harga Beras, Minyak goreng, dan Gula sama-sama 10%, sedangkan Telur naik 15%. Namun kontribusi terhadap inflasi dihitung dari bobot × persentase kenaikan: Beras 40%×10%=4,0; Minyak 25%×10%=2,5; Gula 20%×10%=2,0; Telur 15%×15%=2,25. Karena bobot konsumsinya paling besar, Beras memberi kontribusi terbesar terhadap inflasi meski persentase kenaikannya bukan yang tertinggi.',
+41:'Deflasi terjadi ketika IHK turun dibanding bulan sebelumnya. Dari data, April (118,9) lebih rendah dibanding Maret (119,2), sehingga bulan April mengalami deflasi.',
+42:'Inflasi terus meningkat (2,8%→4,9%) direspons dengan kenaikan BI Rate secara bertahap (5,75%→6,25%) dan pertumbuhan uang beredar M2 yang mulai tertahan (9.100→9.080 pada April). Pola ini konsisten dengan kebijakan moneter kontraktif untuk meredam inflasi.',
+43:'Defisit anggaran (belanja dikurangi pendapatan) terus melebar: 2023=400, 2024=450, 2025=550 (dalam Rp triliun). Belanja yang jauh melampaui pendapatan dan terus membesar menunjukkan kebijakan fiskal ekspansif dengan defisit yang melebar.',
+44:'Pajak lapisan 1: 5%×60.000.000=3.000.000. Lapisan 2: 15%×(250.000.000−60.000.000)=15%×190.000.000=28.500.000. Lapisan 3: 25%×(300.000.000−250.000.000)=25%×50.000.000=12.500.000. Total=3.000.000+28.500.000+12.500.000=Rp44.000.000 (a benar). Tarif dikenakan bertingkat per lapisan, bukan tarif tunggal (b salah), dan ini mencerminkan sifat progresif pajak (c benar). Jika PKP hanya Rp55.000.000 (di bawah Rp60.000.000), seluruhnya masih di lapisan pertama bertarif 5% (d benar). Pajak progresif mencerminkan prinsip keadilan (ability to pay), bukan kesamaan nominal (e salah).',
+45:'X memiliki modal sebagian besar negara dan sebagian dijual ke publik lewat bursa — ciri BUMN Persero yang telah go public. Y dimiliki pemerintah daerah untuk melayani kebutuhan daerah — ciri BUMD. Z dimiliki dan dikelola dari, oleh, untuk anggota demi kesejahteraan bersama — ciri Koperasi.',
+46:'Jasa modal pool = 25%×150.000.000=37.500.000; SHU jasa modal Bu Wati = (3.000.000/120.000.000)×37.500.000=937.500. Jasa usaha pool = 45%×150.000.000=67.500.000; SHU jasa usaha Bu Wati = (9.000.000/300.000.000)×67.500.000=2.025.000. Total SHU = 937.500+2.025.000=Rp2.962.500,00.',
+47:'Selisih ekspor-impor per negara: Tiongkok 65−80=−15 (defisit terbesar); Amerika Serikat 30−12=+18 (surplus); India 22−8=+14 (surplus); Jepang 18−20=−2 (defisit kecil). Defisit bilateral terbesar terjadi dengan Tiongkok, sehingga diperlukan strategi substitusi impor dan penguatan daya saing produk domestik.',
+48:'Kurs Rupiah melemah dari Rp15.500 menjadi Rp16.200 per USD. Sejalan dengan itu, ekspor naik (1.200→1.320 juta USD) karena produk Indonesia menjadi lebih murah bagi pembeli asing, sementara impor turun (1.100→1.020 juta USD) karena barang luar negeri menjadi lebih mahal bagi konsumen domestik — pola ini berpotensi memperbaiki neraca perdagangan.',
+49:'Saldo normal: Kas (aset) di Debit — sudah tepat. Utang Usaha (kewajiban) seharusnya di Kredit, tetapi tercatat di Debit — tidak tepat. Peralatan (aset) seharusnya di Debit, tetapi tercatat di Kredit — tidak tepat. Modal (ekuitas) di Kredit — sudah tepat. Pendapatan Jasa (menambah ekuitas) seharusnya di Kredit, tetapi tercatat di Debit — tidak tepat.',
+50:'Laba bersih = (18.000.000+1.500.000) − (3.000.000+5.500.000+800.000) = 19.500.000−9.300.000 = Rp10.200.000. Modal akhir = Modal awal + Laba bersih − Prive = 50.000.000+10.200.000−2.200.000 = Rp58.000.000,00.'
+};
+
+const SUBSET_25_IDS = [1,2,31,4,6,8,9,37,12,38,14,15,17,42,20,44,22,45,46,25,47,48,28,49,50];
+
+const KELAS_LIST = ['XII A','XII B'];
+const TEACHER_PASSCODE = 'eko2026';
+
+/* =========================================================
+   SINKRONISASI PUSAT (Google Form + Google Sheet)
+   Ini yang membuat nilai siswa dari BROWSER/PERANGKAT APA PUN
+   otomatis masuk ke dashboard guru, tanpa perlu kirim kode manual.
+   Formulir Google cukup 4 kolom: Nama, Kelas, Skor, Data.
+   Selama GOOGLE_FORM_ACTION_URL / ENTRIES / CSV masih kosong,
+   aplikasi tetap berjalan memakai jalur cadangan (window.storage
+   + Kode Hasil manual) seperti sebelumnya.
+   ========================================================= */
+const GOOGLE_FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeiNNx6xYNQQhjpUS4yVgXt4TAFb9ZF4fB9B06-6dEPZQrOnw/formResponse';
+const GOOGLE_FORM_ENTRIES = {
+  nama: 'entry.1084907143', kelas: 'entry.446076845', skor: 'entry.926970709', data: 'entry.310607038'
+};
+const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQPG9vZNi8pWp4dfklOx_rmJttdi0BGoDYKr-IiWDI6bOgADUjAHwOb6ztSpP78-ISPAJn8p7W9VkbR/pub?output=csv';
+const SINKRONISASI_AKTIF = !!(GOOGLE_FORM_ACTION_URL && GOOGLE_FORM_ENTRIES.nama);
+const PEMBACAAN_SHEET_AKTIF = !!GOOGLE_SHEET_CSV_URL;
+
+function kirimKeGoogleForm(record){
+  if(!SINKRONISASI_AKTIF) return;
+  try{
+    let iframe = document.getElementById('gform-target');
+    if(!iframe){
+      iframe = document.createElement('iframe');
+      iframe.name = 'gform-target';
+      iframe.id = 'gform-target';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+    }
+    const form = document.createElement('form');
+    form.action = GOOGLE_FORM_ACTION_URL;
+    form.method = 'POST';
+    form.target = 'gform-target';
+    form.style.display = 'none';
+
+    const dataPayload = JSON.stringify({
+      j: record.jumlahSoal, b: record.totalBenar, s: record.totalSalah,
+      w: record.waktu, t: record.byTipe, m: record.byMateri, d: record.detail
+    });
+    const fields = {
+      [GOOGLE_FORM_ENTRIES.nama]: record.nama,
+      [GOOGLE_FORM_ENTRIES.kelas]: record.kelas,
+      [GOOGLE_FORM_ENTRIES.skor]: record.skorPersen,
+      [GOOGLE_FORM_ENTRIES.data]: dataPayload
+    };
+    Object.keys(fields).forEach(entryId=>{
+      if(!entryId) return;
+      const input = document.createElement('input');
+      input.type='hidden'; input.name=entryId; input.value=fields[entryId];
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(()=>{ if(form.parentNode) form.parentNode.removeChild(form); }, 3000);
+  }catch(e){ console.error('Gagal mengirim ke Google Form', e); }
+}
+
+/* Parser CSV sederhana yang tetap benar meski ada koma/baris baru di dalam kolom bertanda kutip
+   (kolom "Data" berisi JSON yang mengandung koma). */
+function parseCSV(text){
+  const rows=[]; let row=[]; let field=''; let inQuotes=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(inQuotes){
+      if(c==='"'){
+        if(text[i+1]==='"'){ field+='"'; i++; } else { inQuotes=false; }
+      } else field+=c;
+    } else {
+      if(c==='"') inQuotes=true;
+      else if(c===','){ row.push(field); field=''; }
+      else if(c==='\r'){ /* skip */ }
+      else if(c==='\n'){ row.push(field); rows.push(row); row=[]; field=''; }
+      else field+=c;
+    }
+  }
+  if(field.length>0 || row.length>0){ row.push(field); rows.push(row); }
+  return rows.filter(r=>r.length>1 || (r.length===1 && r[0]!==''));
+}
+
+async function muatDariGoogleSheet(){
+  if(!PEMBACAAN_SHEET_AKTIF) return [];
+  try{
+    const res = await fetch(GOOGLE_SHEET_CSV_URL, {cache:'no-store'});
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if(rows.length<2) return [];
+    const header = rows[0].map(h=>h.trim());
+    const idx = {
+      nama: header.findIndex(h=>/nama/i.test(h)),
+      kelas: header.findIndex(h=>/kelas/i.test(h)),
+      skor: header.findIndex(h=>/skor/i.test(h)),
+      timestamp: header.findIndex(h=>/timestamp/i.test(h)),
+      data: header.findIndex(h=>/^data$/i.test(h) || /data/i.test(h))
+    };
+    const out=[];
+    for(let i=1;i<rows.length;i++){
+      const r = rows[i];
+      if(!r || r.every(v=>v==='')) continue;
+      let parsed = {};
+      try{ parsed = JSON.parse((idx.data>-1?r[idx.data]:'')||'{}'); }catch(e){}
+      out.push({
+        nama: idx.nama>-1?r[idx.nama]:'',
+        kelas: idx.kelas>-1?r[idx.kelas]:'',
+        jumlahSoal: Number(parsed.j)||0,
+        totalBenar: Number(parsed.b)||0,
+        totalSalah: Number(parsed.s)||0,
+        skorPersen: Number(idx.skor>-1?r[idx.skor]:0)||0,
+        byTipe: parsed.t||{}, byMateri: parsed.m||{}, detail: parsed.d||[],
+        waktu: parsed.w || (idx.timestamp>-1?r[idx.timestamp]:'') || new Date().toISOString(),
+        _sumber:'sheet'
+      });
+    }
+    return out;
+  }catch(e){
+    console.error('Gagal memuat dari Google Sheet', e);
+    return [];
+  }
+}
+
+/* ================= APP STATE ================= */
+let student = {nama:'', kelas:'', jumlah:0};
+let activeQuestions = [];
+let answers = {};
+let currentIndex = 0;
+let lastResult = null;
+let lastResultCode = '';
+let currentSubmissionKey = null;
+let kuisSudahDikumpulkan = false;
+
+function goTo(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('visible'));
+  document.getElementById('screen-'+screen).classList.add('visible');
+  document.getElementById('nav-siswa').classList.toggle('active', screen!=='teacherGate' && screen!=='teacherDash');
+  document.getElementById('nav-guru').classList.toggle('active', screen==='teacherGate' || screen==='teacherDash');
+}
+
+/* ================= START SCREEN ================= */
+function pickJumlah(n){
+  student.jumlah = n;
+  document.getElementById('pick-25').classList.toggle('selected', n===25);
+  document.getElementById('pick-50').classList.toggle('selected', n===50);
+  validateStart();
+}
+function validateStart(){
+  const nama = document.getElementById('inp-nama').value.trim();
+  const kelas = document.getElementById('inp-kelas').value;
+  document.getElementById('btn-mulai').disabled = !(nama && kelas && student.jumlah);
+}
+document.getElementById('inp-nama').addEventListener('input', validateStart);
+document.getElementById('inp-kelas').addEventListener('change', validateStart);
+
+function mulaiKuis(){
+  student.nama = document.getElementById('inp-nama').value.trim();
+  student.kelas = document.getElementById('inp-kelas').value;
+  if(!student.nama || !student.kelas || !student.jumlah){
+    document.getElementById('start-error').textContent = 'Lengkapi nama, kelas, dan jumlah soal terlebih dahulu.';
+    return;
+  }
+  document.getElementById('start-error').textContent = '';
+  activeQuestions = student.jumlah===25
+    ? SUBSET_25_IDS.map(id=>QUESTIONS.find(q=>q.id===id))
+    : QUESTIONS.slice();
+  answers = {};
+  currentIndex = 0;
+  kuisSudahDikumpulkan = false;
+  currentSubmissionKey = 'hasil:'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+  renderNavGrid();
+  renderQuestion();
+  goTo('quiz');
+}
+
+/* ================= QUIZ SCREEN ================= */
+function renderQuestion(){
+  const q = activeQuestions[currentIndex];
+  const badgeTipe = {pg:'Pilihan Ganda', mcma:'Pilihan Ganda Kompleks', kategori:'Kategori Benar/Salah'}[q.tipe];
+  document.getElementById('quiz-badges').innerHTML =
+    '<span class="badge">'+badgeTipe+'</span><span class="badge" style="background:var(--navy-2)">'+q.materi+'</span>';
+  document.getElementById('quiz-pos').textContent = 'Soal '+(currentIndex+1)+' dari '+activeQuestions.length;
+  document.getElementById('progress-fill').style.width = ((currentIndex+1)/activeQuestions.length*100)+'%';
+  document.getElementById('question-text').textContent = q.teks;
+
+  const body = document.getElementById('question-body');
+  body.innerHTML = '';
+
+  if(q.tipe === 'pg'){
+    q.opsi.forEach(o=>{
+      const picked = answers[q.id] === o.id;
+      const div = document.createElement('div');
+      div.className = 'opsi-item' + (picked?' picked':'');
+      div.onclick = ()=>{ answers[q.id]=o.id; renderQuestion(); updateNavGrid(); };
+      div.innerHTML = '<input type="radio" '+(picked?'checked':'')+' readonly> <span class="txt">'+o.teks+'</span>';
+      body.appendChild(div);
+    });
+  } else if(q.tipe === 'mcma'){
+    if(!answers[q.id]) answers[q.id] = [];
+    q.opsi.forEach(o=>{
+      const picked = answers[q.id].includes(o.id);
+      const div = document.createElement('div');
+      div.className = 'opsi-item' + (picked?' picked':'');
+      div.onclick = ()=>{
+        const arr = answers[q.id];
+        const idx = arr.indexOf(o.id);
+        if(idx>-1) arr.splice(idx,1); else arr.push(o.id);
+        renderQuestion(); updateNavGrid();
+      };
+      div.innerHTML = '<input type="checkbox" '+(picked?'checked':'')+' readonly> <span class="txt">'+o.teks+'</span>';
+      body.appendChild(div);
+    });
+  } else if(q.tipe === 'kategori'){
+    if(!answers[q.id]) answers[q.id] = {};
+    let html = '<table class="kategori-tbl"><tr><th>Pernyataan</th><th class="center">Benar</th><th class="center">Salah</th></tr>';
+    q.pernyataan.forEach((p,i)=>{
+      const val = answers[q.id][i];
+      html += '<tr><td>'+p.teks+'</td>'+
+        '<td class="center"><input type="radio" name="q'+q.id+'_p'+i+'" '+(val===true?'checked':'')+' onclick="setKategori('+q.id+','+i+',true)"></td>'+
+        '<td class="center"><input type="radio" name="q'+q.id+'_p'+i+'" '+(val===false?'checked':'')+' onclick="setKategori('+q.id+','+i+',false)"></td></tr>';
+    });
+    html += '</table>';
+    body.innerHTML = html;
+  }
+
+  document.getElementById('btn-prev').disabled = currentIndex===0;
+  const isLast = currentIndex === activeQuestions.length-1;
+  document.getElementById('btn-next').style.display = isLast? 'none':'inline-flex';
+  document.getElementById('btn-selesai').style.display = isLast? 'inline-flex':'none';
+  updateNavGrid();
+}
+function setKategori(qid, i, val){
+  answers[qid][i] = val;
+  renderQuestion();
+}
+function prevQuestion(){ if(currentIndex>0){ currentIndex--; renderQuestion(); } }
+function nextQuestion(){ if(currentIndex<activeQuestions.length-1){ currentIndex++; renderQuestion(); } }
+
+function renderNavGrid(){
+  const grid = document.getElementById('nav-grid');
+  grid.innerHTML = '';
+  activeQuestions.forEach((q,i)=>{
+    const btn = document.createElement('button');
+    btn.textContent = i+1;
+    btn.onclick = ()=>{ currentIndex=i; renderQuestion(); };
+    grid.appendChild(btn);
+  });
+  updateNavGrid();
+}
+function updateNavGrid(){
+  const grid = document.getElementById('nav-grid');
+  Array.from(grid.children).forEach((btn,i)=>{
+    const q = activeQuestions[i];
+    const ans = answers[q.id];
+    let terjawab = false;
+    if(q.tipe==='pg') terjawab = !!ans;
+    else if(q.tipe==='mcma') terjawab = ans && ans.length>0;
+    else if(q.tipe==='kategori') terjawab = ans && Object.keys(ans).length === q.pernyataan.length;
+    btn.classList.toggle('answered', terjawab);
+    btn.classList.toggle('current', i===currentIndex);
+  });
+}
+
+function showModal(message, opts){
+  opts = opts || {};
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  const box = document.createElement('div');
+  box.className = 'modal-box';
+  const msg = document.createElement('p');
+  msg.className = 'modal-msg';
+  msg.textContent = message;
+  const actions = document.createElement('div');
+  actions.className = 'modal-actions';
+  if(opts.showCancel){
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn secondary';
+    cancelBtn.textContent = opts.cancelText || 'Batal';
+    cancelBtn.onclick = ()=>{ overlay.remove(); if(opts.onCancel) opts.onCancel(); };
+    actions.appendChild(cancelBtn);
+  }
+  const okBtn = document.createElement('button');
+  okBtn.className = 'btn gold';
+  okBtn.textContent = opts.confirmText || 'OK';
+  okBtn.onclick = ()=>{ overlay.remove(); if(opts.onConfirm) opts.onConfirm(); };
+  actions.appendChild(okBtn);
+  box.appendChild(msg);
+  box.appendChild(actions);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+function konfirmasiSelesai(){
+  if(kuisSudahDikumpulkan) return;
+  const belum = activeQuestions.filter(q=>{
+    const ans = answers[q.id];
+    if(q.tipe==='pg') return !ans;
+    if(q.tipe==='mcma') return !ans || ans.length===0;
+    if(q.tipe==='kategori') return !ans || Object.keys(ans).length < q.pernyataan.length;
+  }).length;
+  const pesan = belum>0
+    ? 'Masih ada '+belum+' soal yang belum dijawab. Yakin ingin mengumpulkan?'
+    : 'Yakin ingin mengumpulkan jawaban?';
+  showModal(pesan, {
+    showCancel:true,
+    confirmText:'Ya, kumpulkan',
+    cancelText:'Kembali',
+    onConfirm: selesaikanKuis
+  });
+}
+
+/* ================= GRADING ================= */
+function isCorrect(q){
+  const ans = answers[q.id];
+  if(q.tipe==='pg'){
+    return ans === q.kunci;
+  } else if(q.tipe==='mcma'){
+    if(!ans) return false;
+    const correctIds = q.opsi.filter(o=>o.benar).map(o=>o.id).sort().join(',');
+    const givenIds = ans.slice().sort().join(',');
+    return correctIds === givenIds;
+  } else if(q.tipe==='kategori'){
+    if(!ans) return false;
+    return q.pernyataan.every((p,i)=> ans[i] === p.benar);
+  }
+  return false;
+}
+
+function selesaikanKuis(){
+  if(kuisSudahDikumpulkan) return;
+  kuisSudahDikumpulkan = true;
+
+  let benar=0, salah=0;
+  const byTipe={}, byMateri={}, detail=[];
+  activeQuestions.forEach(q=>{
+    const ok = isCorrect(q);
+    if(ok) benar++; else salah++;
+    byTipe[q.tipe] = byTipe[q.tipe] || {benar:0,salah:0};
+    byTipe[q.tipe][ok?'benar':'salah']++;
+    byMateri[q.materi] = byMateri[q.materi] || {benar:0,salah:0};
+    byMateri[q.materi][ok?'benar':'salah']++;
+    detail.push({id:q.id, benar:ok});
+  });
+
+  const record = {
+    nama: student.nama,
+    kelas: student.kelas,
+    jumlahSoal: activeQuestions.length,
+    totalBenar: benar,
+    totalSalah: salah,
+    skorPersen: Math.round((benar/activeQuestions.length)*1000)/10,
+    byTipe, byMateri, detail,
+    waktu: new Date().toISOString()
+  };
+  lastResult = record;
+  lastResultCode = encodeRecord(record);
+  simpanHasil(record);
+  simpanLokalCadangan(record);
+  kirimKeGoogleForm(record);
+  tampilkanHasil(record);
+}
+
+async function simpanHasil(record){
+  try{
+    if(!window.storage) throw new Error('window.storage tidak tersedia di lingkungan ini');
+    await window.storage.set(currentSubmissionKey, JSON.stringify(record), true);
+  }catch(e){
+    console.error('Gagal menyimpan hasil ke penyimpanan otomatis', e);
+  }
+}
+
+/* Cadangan lokal: memastikan siswa tetap bisa mengambil "Kode Hasil"-nya
+   meskipun penyimpanan otomatis (window.storage) tidak tersedia di lingkungan
+   tempat aplikasi ini dibuka (misalnya saat file dibagikan & dibuka di luar Claude). */
+function simpanLokalCadangan(record){
+  try{
+    const key = 'tka_ekonomi_hasil_lokal';
+    const list = JSON.parse(localStorage.getItem(key) || '[]');
+    list.push(record);
+    localStorage.setItem(key, JSON.stringify(list));
+  }catch(e){ /* localStorage tidak tersedia, abaikan */ }
+}
+
+/* ================= KODE HASIL (fallback manual) ================= */
+function encodeRecord(record){
+  const compact = {
+    n: record.nama, k: record.kelas, j: record.jumlahSoal,
+    b: record.totalBenar, s: record.totalSalah, p: record.skorPersen,
+    t: record.byTipe, m: record.byMateri,
+    d: (record.detail||[]).map(x=>({i:x.id, b:x.benar?1:0})),
+    w: record.waktu
+  };
+  try{
+    return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
+  }catch(e){ return ''; }
+}
+function decodeRecord(code){
+  const compact = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+  return {
+    nama: compact.n, kelas: compact.k, jumlahSoal: compact.j,
+    totalBenar: compact.b, totalSalah: compact.s, skorPersen: compact.p,
+    byTipe: compact.t, byMateri: compact.m,
+    detail: (compact.d||[]).map(x=>({id:x.i, benar: !!x.b})),
+    waktu: compact.w, _manual:true
+  };
+}
+
+/* ================= RESULT SCREEN ================= */
+function tipeLabel(t){ return {pg:'Pilihan Ganda', mcma:'Pilihan Ganda Kompleks', kategori:'Kategori Benar/Salah'}[t] || t; }
+
+function barColor(pct){
+  if(pct>=75) return '';
+  if(pct>=50) return 'mid';
+  return 'low';
+}
+function renderBreakdown(containerId, dict, labelFn){
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  Object.keys(dict).forEach(k=>{
+    const d = dict[k];
+    const total = d.benar+d.salah;
+    const pct = total? Math.round(d.benar/total*100):0;
+    const row = document.createElement('div');
+    row.className='bar-row';
+    row.innerHTML = '<div>'+(labelFn?labelFn(k):k)+'</div>'+
+      '<div class="bar-track"><div class="bar-fill '+barColor(pct)+'" style="width:'+pct+'%"></div></div>'+
+      '<div>'+d.benar+'/'+total+' ('+pct+'%)</div>';
+    el.appendChild(row);
+  });
+}
+
+function tampilkanHasil(record){
+  document.getElementById('result-sub').textContent = record.nama+' — Kelas '+record.kelas+' — '+record.jumlahSoal+' soal dikerjakan';
+  document.getElementById('score-pct').textContent = record.skorPersen+'%';
+  document.getElementById('score-benar').textContent = record.totalBenar;
+  document.getElementById('score-salah').textContent = record.totalSalah;
+  renderBreakdown('bd-tipe', record.byTipe, tipeLabel);
+  renderBreakdown('bd-materi', record.byMateri);
+  document.getElementById('review-list').style.display='none';
+  document.getElementById('review-list').innerHTML='';
+  document.getElementById('kode-hasil-box').style.display='none';
+  goTo('result');
+}
+
+function kunciText(q){
+  if(q.tipe==='pg'){
+    const opt = q.opsi.find(o=>o.id===q.kunci);
+    return 'Kunci jawaban: '+opt.teks;
+  } else if(q.tipe==='mcma'){
+    const benar = q.opsi.filter(o=>o.benar).map(o=>o.teks);
+    return 'Kunci jawaban (benar lebih dari satu): '+benar.map(t=>'• '+t).join(' ');
+  } else if(q.tipe==='kategori'){
+    return 'Kunci jawaban: '+q.pernyataan.map((p,i)=>'Pernyataan '+(i+1)+' — '+(p.benar?'Benar':'Salah')).join(' | ');
+  }
+  return '';
+}
+
+function jawabanSiswaText(q){
+  const ans = answers[q.id];
+  if(q.tipe==='pg'){
+    if(!ans) return 'Tidak dijawab.';
+    const opt = q.opsi.find(o=>o.id===ans);
+    return 'Jawaban kamu: '+(opt?opt.teks:'-');
+  } else if(q.tipe==='mcma'){
+    if(!ans || ans.length===0) return 'Tidak dijawab.';
+    const dipilih = q.opsi.filter(o=>ans.includes(o.id)).map(o=>o.teks);
+    return 'Jawaban kamu: '+dipilih.map(t=>'• '+t).join(' ');
+  } else if(q.tipe==='kategori'){
+    if(!ans || Object.keys(ans).length < q.pernyataan.length) return 'Tidak dijawab lengkap.';
+    return 'Jawaban kamu: '+q.pernyataan.map((p,i)=>'Pernyataan '+(i+1)+' — '+(ans[i]?'Benar':'Salah')).join(' | ');
+  }
+  return '';
+}
+
+function toggleKodeHasil(){
+  const box = document.getElementById('kode-hasil-box');
+  const ta = document.getElementById('kode-hasil-text');
+  if(box.style.display==='none'){
+    ta.value = lastResultCode || '(kode tidak tersedia)';
+    box.style.display='block';
+  } else {
+    box.style.display='none';
+  }
+}
+function salinKodeHasil(){
+  const ta = document.getElementById('kode-hasil-text');
+  ta.select();
+  try{
+    document.execCommand('copy');
+    showModal('Kode hasil berhasil disalin.');
+  }catch(e){
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(ta.value).then(()=>showModal('Kode hasil berhasil disalin.'))
+        .catch(()=>showModal('Gagal menyalin otomatis. Silakan salin manual dari kotak teks.'));
+    } else {
+      showModal('Gagal menyalin otomatis. Silakan salin manual dari kotak teks.');
+    }
+  }
+}
+
+function toggleReview(){
+  const el = document.getElementById('review-list');
+  if(el.style.display==='none'){
+    let html='';
+    activeQuestions.forEach((q,i)=>{
+      const ok = isCorrect(q);
+      html += '<div class="review-item"><div class="rq"><strong>Soal '+(i+1)+'.</strong> '+
+        '<span class="rtag '+(ok?'ok':'no')+'">'+(ok?'Benar':'Salah')+'</span> '+
+        '<span class="rtag" style="background:#eef1f6;color:var(--navy)">'+q.materi+'</span></div>'+
+        '<div style="font-size:13.5px;color:var(--muted);white-space:pre-wrap;margin-bottom:8px;">'+q.teks.split('\n')[0]+'</div>'+
+        '<div style="font-size:13.5px;margin-bottom:4px;">'+jawabanSiswaText(q)+'</div>'+
+        '<div style="font-size:13.5px;color:var(--navy);font-weight:600;margin-bottom:4px;">'+kunciText(q)+'</div>'+
+        '<div style="font-size:13.5px;background:#f7f9fb;border-left:3px solid var(--gold);padding:8px 10px;border-radius:4px;"><strong>Pembahasan:</strong> '+(PEMBAHASAN[q.id]||'-')+'</div>'+
+        '</div>';
+    });
+    el.innerHTML = html;
+    el.style.display='block';
+  } else {
+    el.style.display='none';
+  }
+}
+
+function ulangiKuis(){
+  goTo('start');
+  document.getElementById('inp-nama').value='';
+  document.getElementById('inp-kelas').value='';
+  student = {nama:'',kelas:'',jumlah:0};
+  document.getElementById('pick-25').classList.remove('selected');
+  document.getElementById('pick-50').classList.remove('selected');
+  document.getElementById('btn-mulai').disabled = true;
+}
+
+/* ================= TEACHER ================= */
+function cekPasscode(){
+  const val = document.getElementById('inp-pass').value.trim();
+  if(val === TEACHER_PASSCODE){
+    document.getElementById('pass-error').textContent='';
+    document.getElementById('inp-pass').value='';
+    goTo('teacherDash');
+    const statusEl = document.getElementById('sync-status');
+    statusEl.innerHTML = PEMBACAAN_SHEET_AKTIF
+      ? '🟢 Sinkronisasi Google Sheet aktif — nilai dari perangkat/browser mana pun akan otomatis muncul di sini.'
+      : '🟠 Sinkronisasi Google Sheet belum diaktifkan — saat ini hanya nilai yang dikerjakan langsung di dalam Claude yang otomatis tercatat. Nilai dari luar Claude perlu ditambahkan lewat "Kode Hasil" di bawah.';
+    muatUlangDashboard();
+  } else {
+    document.getElementById('pass-error').textContent = 'Kode akses salah, coba lagi.';
+  }
+}
+
+let allRecords = [];
+
+function toggleImporBox(){
+  const box = document.getElementById('impor-box');
+  box.style.display = box.style.display==='none' ? 'block' : 'none';
+}
+function toggleRiwayat(){
+  const box = document.getElementById('tbl-riwayat');
+  const btn = document.getElementById('btn-toggle-riwayat');
+  const show = box.style.display==='none';
+  box.style.display = show ? 'block' : 'none';
+  btn.textContent = show ? 'Sembunyikan seluruh riwayat' : 'Lihat seluruh riwayat pengerjaan';
+}
+
+function kunciSiswa(r){ return (r.nama||'').trim().toLowerCase()+'|'+r.kelas; }
+function getRingkasanTerbaru(list){
+  const map = {};
+  list.forEach(r=>{
+    const key = kunciSiswa(r);
+    if(!map[key] || new Date(r.waktu) > new Date(map[key].waktu)) map[key] = r;
+  });
+  return Object.values(map);
+}
+function hitungPercobaan(list){
+  const map = {};
+  list.forEach(r=>{ const key = kunciSiswa(r); map[key] = (map[key]||0)+1; });
+  return map;
+}
+
+function muatImporLokal(){
+  try{ return JSON.parse(localStorage.getItem('tka_ekonomi_manual_import')||'[]'); }
+  catch(e){ return []; }
+}
+function simpanImporLokal(record){
+  try{
+    const list = muatImporLokal();
+    list.push(record);
+    localStorage.setItem('tka_ekonomi_manual_import', JSON.stringify(list));
+  }catch(e){ /* localStorage tidak tersedia */ }
+}
+
+async function imporKodeHasil(){
+  const raw = document.getElementById('impor-kode-text').value;
+  const lines = raw.split('\n').map(s=>s.trim()).filter(Boolean);
+  let sukses=0, gagal=0;
+  for(const line of lines){
+    try{
+      const rec = decodeRecord(line);
+      if(!rec.nama || !rec.kelas) throw new Error('data tidak lengkap');
+      rec._srcCode = line;
+      allRecords.push(rec);
+      simpanImporLokal(rec);
+      try{
+        if(window.storage){
+          const key='hasil:'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+          await window.storage.set(key, JSON.stringify(rec), true);
+        }
+      }catch(e){ /* tetap tersimpan lokal walau gagal sinkron */ }
+      sukses++;
+    }catch(e){ gagal++; }
+  }
+  document.getElementById('impor-kode-text').value='';
+  document.getElementById('impor-status').textContent = sukses>0
+    ? sukses+' kode berhasil ditambahkan'+(gagal>0?', '+gagal+' kode gagal dibaca (format tidak sesuai).':'.')
+    : 'Tidak ada kode yang berhasil ditambahkan. Periksa kembali format kode yang ditempel.';
+  renderDashboard();
+}
+
+async function muatUlangDashboard(){
+  allRecords = [];
+  try{
+    const listRes = await window.storage.list('hasil:', true);
+    const keys = (listRes && listRes.keys) ? listRes.keys : [];
+    for(const k of keys){
+      try{
+        const item = await window.storage.get(k.key || k, true);
+        if(item && item.value){
+          allRecords.push(JSON.parse(item.value));
+        }
+      }catch(e){ /* skip unreadable key */ }
+    }
+  }catch(e){
+    console.error('Gagal memuat data guru', e);
+  }
+  // Sumber utama untuk sinkronisasi lintas perangkat/browser: Google Sheet
+  // (terisi otomatis dari Google Form setiap siswa mengumpulkan jawaban).
+  if(PEMBACAAN_SHEET_AKTIF){
+    const dariSheet = await muatDariGoogleSheet();
+    allRecords = allRecords.concat(dariSheet);
+  }
+  // Gabungkan hasil yang ditambahkan manual via Kode Hasil (tersimpan lokal di perangkat ini)
+  // agar tidak hilang meskipun window.storage tidak tersedia, dan hindari duplikat jika
+  // rekaman yang sama kebetulan juga berhasil tersinkron otomatis.
+  const kodeYangSudahAda = new Set(allRecords.filter(r=>r._srcCode).map(r=>r._srcCode));
+  muatImporLokal().forEach(r=>{
+    if(!r._srcCode || !kodeYangSudahAda.has(r._srcCode)){
+      allRecords.push(r);
+    }
+  });
+  renderDashboard();
+}
+
+function renderDashboard(){
+  const filterKelas = document.getElementById('filter-kelas').value;
+  const data = filterKelas==='Semua' ? allRecords : allRecords.filter(r=>r.kelas===filterKelas);
+  const ringkasanSemua = getRingkasanTerbaru(allRecords);
+  const ringkasan = filterKelas==='Semua' ? ringkasanSemua : ringkasanSemua.filter(r=>r.kelas===filterKelas);
+  const jumlahPercobaan = hitungPercobaan(allRecords);
+
+  // overview cards
+  const rataSkor = ringkasan.length ? Math.round(ringkasan.reduce((a,r)=>a+r.skorPersen,0)/ringkasan.length*10)/10 : 0;
+  const ov = document.getElementById('ov-cards');
+  ov.innerHTML =
+    '<div class="ocard"><div class="v">'+ringkasan.length+'</div><div class="l">Siswa unik mengerjakan</div></div>'+
+    '<div class="ocard"><div class="v">'+data.length+'</div><div class="l">Total pengerjaan (termasuk percobaan ulang)</div></div>'+
+    '<div class="ocard"><div class="v">'+rataSkor+'%</div><div class="l">Rata-rata skor (percobaan terbaru)</div></div>'+
+    '<div class="ocard"><div class="v">'+(allRecords.length)+'</div><div class="l">Total data tersimpan (semua kelas)</div></div>';
+
+  // per kelas (berbasis percobaan terbaru tiap siswa, agar tidak terdistorsi oleh pengulangan)
+  const perKelas = {};
+  KELAS_LIST.forEach(k=>perKelas[k]={jumlah:0, totalSkor:0});
+  ringkasanSemua.forEach(r=>{
+    if(!perKelas[r.kelas]) perKelas[r.kelas]={jumlah:0,totalSkor:0};
+    perKelas[r.kelas].jumlah++;
+    perKelas[r.kelas].totalSkor += r.skorPersen;
+  });
+  let tblKelas = '<table class="data-tbl"><tr><th>Kelas</th><th>Jumlah siswa mengerjakan</th><th>Rata-rata skor</th></tr>';
+  KELAS_LIST.forEach(k=>{
+    const d = perKelas[k];
+    const rata = d.jumlah? Math.round(d.totalSkor/d.jumlah*10)/10 : 0;
+    tblKelas += '<tr><td>'+k+'</td><td>'+d.jumlah+'</td><td>'+(d.jumlah? rata+'%':'—')+'</td></tr>';
+  });
+  tblKelas += '</table>';
+  document.getElementById('tbl-perkelas').innerHTML = allRecords.length===0
+    ? '<div class="empty-state">Belum ada siswa yang mengerjakan latihan soal.</div>' : tblKelas;
+
+  // ringkasan per siswa (percobaan terbaru saja, supaya rapi)
+  if(ringkasan.length===0){
+    document.getElementById('tbl-detail').innerHTML = '<div class="empty-state">Tidak ada data untuk filter ini.</div>';
+  } else {
+    let tbl = '<table class="data-tbl"><tr><th>Nama</th><th>Kelas</th><th>Jumlah soal</th><th>Benar</th><th>Salah</th><th>Skor</th><th>Percobaan</th><th>Waktu terbaru</th></tr>';
+    ringkasan.slice().sort((a,b)=> a.nama.localeCompare(b.nama)).forEach(r=>{
+      const waktu = new Date(r.waktu).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'});
+      const kali = jumlahPercobaan[kunciSiswa(r)] || 1;
+      tbl += '<tr><td>'+r.nama+(r._manual?' <span style="color:var(--muted);font-size:11px;">(manual)</span>':'')+'</td><td>'+r.kelas+'</td><td>'+r.jumlahSoal+'</td><td>'+r.totalBenar+'</td><td>'+r.totalSalah+'</td><td>'+r.skorPersen+'%</td><td>'+kali+'x</td><td>'+waktu+'</td></tr>';
+    });
+    tbl += '</table>';
+    document.getElementById('tbl-detail').innerHTML = tbl;
+  }
+
+  // seluruh riwayat (semua percobaan)
+  if(data.length===0){
+    document.getElementById('tbl-riwayat-isi').innerHTML = '<div class="empty-state">Tidak ada data untuk filter ini.</div>';
+  } else {
+    let tblDetail = '<table class="data-tbl"><tr><th>Nama</th><th>Kelas</th><th>Jumlah soal</th><th>Benar</th><th>Salah</th><th>Skor</th><th>Waktu</th></tr>';
+    data.slice().sort((a,b)=> new Date(b.waktu)-new Date(a.waktu)).forEach(r=>{
+      const waktu = new Date(r.waktu).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'});
+      tblDetail += '<tr><td>'+r.nama+(r._manual?' <span style="color:var(--muted);font-size:11px;">(manual)</span>':'')+'</td><td>'+r.kelas+'</td><td>'+r.jumlahSoal+'</td><td>'+r.totalBenar+'</td><td>'+r.totalSalah+'</td><td>'+r.skorPersen+'%</td><td>'+waktu+'</td></tr>';
+    });
+    tblDetail += '</table>';
+    document.getElementById('tbl-riwayat-isi').innerHTML = tblDetail;
+  }
+
+  // aggregate breakdown (berbasis percobaan terbaru tiap siswa)
+  const aggTipe={}, aggMateri={}, soalSalahCount={};
+  ringkasan.forEach(r=>{
+    Object.keys(r.byTipe||{}).forEach(k=>{
+      aggTipe[k]=aggTipe[k]||{benar:0,salah:0};
+      aggTipe[k].benar+=r.byTipe[k].benar; aggTipe[k].salah+=r.byTipe[k].salah;
+    });
+    Object.keys(r.byMateri||{}).forEach(k=>{
+      aggMateri[k]=aggMateri[k]||{benar:0,salah:0};
+      aggMateri[k].benar+=r.byMateri[k].benar; aggMateri[k].salah+=r.byMateri[k].salah;
+    });
+    (r.detail||[]).forEach(d=>{
+      if(!d.benar){
+        soalSalahCount[d.id] = (soalSalahCount[d.id]||0)+1;
+      }
+    });
+  });
+  if(ringkasan.length===0){
+    document.getElementById('dash-tipe').innerHTML = '<div class="empty-state">Belum ada data.</div>';
+    document.getElementById('dash-materi').innerHTML = '';
+    document.getElementById('dash-soal-sulit').innerHTML = '';
+  } else {
+    renderBreakdown('dash-tipe', aggTipe, tipeLabel);
+    renderBreakdown('dash-materi', aggMateri);
+
+    const sorted = Object.entries(soalSalahCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    if(sorted.length===0){
+      document.getElementById('dash-soal-sulit').innerHTML = '<div class="empty-state">Belum ada jawaban salah tercatat.</div>';
+    } else {
+      let html = '<table class="data-tbl"><tr><th>Soal</th><th>Materi</th><th>Jumlah salah</th></tr>';
+      sorted.forEach(([id,count])=>{
+        const q = QUESTIONS.find(x=>x.id==id);
+        html += '<tr><td>Soal '+id+' — '+ (q? q.teks.split('\n')[0].slice(0,70)+'…' : '') +'</td><td>'+(q?q.materi:'-')+'</td><td>'+count+'</td></tr>';
+      });
+      html += '</table>';
+      document.getElementById('dash-soal-sulit').innerHTML = html;
+    }
+  }
+}
+
+function exportCSV(){
+  if(allRecords.length===0){ showModal('Belum ada data untuk diunduh.'); return; }
+  let csv = 'Nama,Kelas,Jumlah Soal,Benar,Salah,Skor (%),Waktu\n';
+  allRecords.forEach(r=>{
+    const waktu = new Date(r.waktu).toLocaleString('id-ID');
+    csv += [r.nama, r.kelas, r.jumlahSoal, r.totalBenar, r.totalSalah, r.skorPersen, waktu].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')+'\n';
+  });
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'rekap_nilai_tka_ekonomi.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
